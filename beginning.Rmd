@@ -79,11 +79,13 @@ Internet users compares the number of users within a country that access the Int
 
 
 ## Further Research:
-Lee, Cheng-Wen, [The Relationship between Internet Environment and Life Expectancy in Asia
-	Article](http://buscompress.com/uploads/3/4/9/8/34980536/riber_8-2_06_m18-053_70-80.pdf) explores this question specifically in Asia, with relevant take-away in emphasising the disparity between countries with advanced telecommunication services and those without in regards to their general economic development in a globalized market.
+Lee, Cheng-Wen, [The Relationship between Internet Environment and Life Expectancy in Asia](http://buscompress.com/uploads/3/4/9/8/34980536/riber_8-2_06_m18-053_70-80.pdf)
+
+  Article explores this question specifically in Asia, with relevant take-away in emphasising the disparity between countries with advanced telecommunication services and those without in regards to their general economic development in a globalized market.
 
 Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, [Examining the Relationship between the Internet and Life Expectancy](https://www.researchgate.net/publication/268631883_Examining_the_Relationship_between_the_Internet_and_Life_Expectancy#read)
 
+  Article explores this question Globall, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
 
 \newpage
 ### Exploratory plots:
