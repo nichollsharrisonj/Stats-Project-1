@@ -15,25 +15,10 @@ cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project 1/St
 
 #### CIA Factbook
 
+### Question:
 
-Infant mortality rate as it compared to maternal mortality rate
+In a given nation, does the proportion of the population using the internet correlate to life expectancy at birth?
 
-Population growth as compared to internet usership
-
-Birth Rate as compared to infant mortality rate
-
-Birth rate as compared to life expectancy at birth
-
-#### Questions (Hypothetical)
-
-
-What is, or is there, a relationship between a country’s rate of birth and rate of infant mortality?
-
-What is, or is there, a relationship between a country’s rate of birth and life expectancy at birth?
-
-#### Current working concept of data: 
-
-Proportion of population using the internet vs life expectancy (With birth rate as color, which we may or may not keep)
 
 ```{r,echo=FALSE,warning=FALSE}
 ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = birth_rate)) + xlab('Internet users / population') + ylab('Life Expentancy at birth')
@@ -45,10 +30,15 @@ ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_
 
 
 What is it?
+
 - Details on countries
+
 Where does it come from? 
+
 - CIA Factbook
+
 What is the description of each variable?
+
 - See below
 
 
