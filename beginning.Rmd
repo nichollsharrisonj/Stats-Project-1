@@ -6,12 +6,12 @@ output:
 ```{r setup, include=FALSE}
 library(tidyverse)
 passwords <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-14/passwords.csv')
-cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project1/cia_factbook.csv')
+cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project 1/Stats-Project-1/cia_factbook.csv') #Change this to your csv's directory
 ```
 
-### Dashiel Ward, Gavin Rimmer, Bailee Brunsmann, Harrison Nicholls
+# Statistics Project – Math 141
 
-### Statistics Project – Math 141
+## Dashiel Ward, Gavin Rimmer, Bailee Brunsmann, Harrison Nicholls
 
 #### CIA Factbook
 
@@ -31,12 +31,12 @@ What is, or is there, a relationship between a country’s rate of birth and rat
 
 What is, or is there, a relationship between a country’s rate of birth and life expectancy at birth?
 
-#### Current working concept of data:
+#### Current working concept of data: 
 
-
+Proportion of population using the internet vs life expectancy (With birth rate as color, which we may or may not keep)
 
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = birth_rate))
+ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = birth_rate)) + xlab('Internet users / population') + ylab('Life Expentancy at birth')
 ```
 
 
@@ -52,7 +52,7 @@ What is the description of each variable?
 - See below
 
 
-### Variables:
+## Variables:
 
 #### Country - Categorical - Nominal
 Countries recognized by the CIA.
@@ -88,6 +88,12 @@ Life expectancy at birth compares the average number of years to be lived by a g
 Internet users compares the number of users within a country that access the Internet. Statistics vary from country to country and may include users who access the Internet at least several times a week to those who access it only once within a period of several months.
 
 
+## Further Research:
+Lee, Cheng-Wen, [The Relationship between Internet Environment and Life Expectancy in Asia
+	Article](http://buscompress.com/uploads/3/4/9/8/34980536/riber_8-2_06_m18-053_70-80.pdf) explores this question specifically in Asia, with relevant take-away in emphasising the disparity between countries with advanced telecommunication services and those without in regards to their general economic development in a globalized market.
+
+Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, [Examining the Relationship between the Internet and Life Expectancy](https://www.researchgate.net/publication/268631883_Examining_the_Relationship_between_the_Internet_and_Life_Expectancy#read)
+
 
 \newpage
 ### Exploratory plots:
@@ -97,10 +103,10 @@ Internet users compares the number of users within a country that access the Int
 glimpse(cia)
 ```
 
+
 ```{r, echo = FALSE, warning=FALSE}
 ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = death_rate))
 ```
-
 
 
 ```{r,echo=FALSE,warning=FALSE}
