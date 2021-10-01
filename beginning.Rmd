@@ -1,0 +1,111 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+passwords <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-14/passwords.csv')
+cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project1/cia_factbook.csv')
+```
+
+### Dashiel Ward, Gavin Rimmer, Bailee Brunsmann, Harrison Nicholls
+
+### Statistics Project – Math 141
+
+#### CIA Factbook
+
+
+Infant mortality rate as it compared to maternal mortality rate
+
+Population growth as compared to internet usership
+
+Birth Rate as compared to infant mortality rate
+
+Birth rate as compared to life expectancy at birth
+
+#### Questions (Hypothetical)
+
+
+What is, or is there, a relationship between a country’s rate of birth and rate of infant mortality?
+
+What is, or is there, a relationship between a country’s rate of birth and life expectancy at birth?
+
+#### Current working concept of data:
+
+
+
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = birth_rate))
+```
+
+
+
+#### Dataset:
+
+
+What is it?
+- Details on countries
+Where does it come from? 
+- CIA Factbook
+What is the description of each variable?
+- See below
+
+
+### Variables:
+
+#### Country - Categorical - Nominal
+Countries recognized by the CIA.
+
+#### Area - Numerical - Continuous
+Land in Square km
+
+#### Infant Mortality Rate - Numerical - Continuous
+Infant mortality rate compares the number of deaths of infants under one year old in a given year per 1,000 live births in the same year. This rate is often used as an indicator of the level of health in a country.
+
+#### Population - Numerical - Discrete
+Population compares estimates from the US Bureau of the Census based on statistics from population censuses, vital statistics registration systems, or sample surveys pertaining to the recent past and on assumptions about future trends.
+
+#### Population growth rate - Numerical - Continuous
+Population growth rate compares the average annual percent change in populations, resulting from a surplus (or deficit) of births over deaths and the balance of migrants entering and leaving a country. The rate may be positive or negative.
+
+#### Birth Rate - Numerical - Continuous
+Birth rate compares the average annual number of births during a year per 1,000 persons in the population at midyear; also known as crude birth rate.
+
+#### Death rate - Numerical - Continuous
+Death rate compares the average annual number of deaths during a year per 1,000 population at midyear; also known as crude death rate.
+
+#### Net migration rate - Numerical - Continuous
+Net Migration rate compares the difference between the number of persons entering and leaving a country during the year per 1,000 persons (based on midyear population).
+
+#### Maternal mortality rate – Numerical - Continuous
+The Maternal mortality rate (MMR) is the annual number of female deaths per 100,000 live births from any cause related to or aggravated by pregnancy or its management (excluding accidental or incidental causes).
+
+#### Life expectancy at birth – Numerical - Discrete
+Life expectancy at birth compares the average number of years to be lived by a group of people born in the same year, if mortality at each age remains constant in the future. Life expectancy at birth is also a measure of overall quality of life in a country and summarizes the mortality at all ages.
+
+#### Internet users – Numerical - Discrete
+Internet users compares the number of users within a country that access the Internet. Statistics vary from country to country and may include users who access the Internet at least several times a week to those who access it only once within a period of several months.
+
+
+
+\newpage
+### Exploratory plots:
+
+
+```{r,echo=FALSE,warning=FALSE}
+glimpse(cia)
+```
+
+```{r, echo = FALSE, warning=FALSE}
+ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = death_rate))
+```
+
+
+
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=death_rate)) + geom_histogram(bins = 60, aes(color = death_rate))
+```
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=life_exp_at_birth)) + geom_histogram(bins = 60, aes(color = death_rate))
+```
