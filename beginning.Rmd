@@ -85,7 +85,7 @@ Lee, Cheng-Wen, [The Relationship between Internet Environment and Life Expectan
 
 Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, [Examining the Relationship between the Internet and Life Expectancy](https://www.researchgate.net/publication/268631883_Examining_the_Relationship_between_the_Internet_and_Life_Expectancy#read)
 
-  Article explores this question Globall, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
+  Article explores this question globally, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
 
 \newpage
 ### Exploratory plots:
