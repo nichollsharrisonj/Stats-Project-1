@@ -11,7 +11,8 @@ passwords <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project 1/Stats-Project-1/cia_factbook.csv') #Change this to your csv's directory
 cia <- cia %>% mutate(
   continent = countrycode(country,origin="country.name",destination="continent"),
-  density = (population/area)
+  density = (population/area),
+  internet_usage_proportion = internet_users/population
 )
 cia <- na.omit(cia) #OMIT ALL ROWS WITH ANY NA VALUES
 ```
@@ -29,7 +30,7 @@ In a given nation, does the proportion of the population using the internet corr
 
 
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth')
+ggplot (data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
 ```
 
 
@@ -105,7 +106,7 @@ glimpse(cia)
 
 
 ```{r, echo = FALSE, warning=FALSE}
-ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent,size = density)) + xlab("Birth Rate - births per 1,000 people") + ylab("Life Expentancy At Birth")
+ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent,size = density)) + xlab("Birth Rate - births per 1,000 people") + ylab("Life Expentancy At Birth")  + ggtitle('Figure 2')
 ```
 
 
@@ -114,17 +115,20 @@ ggplot (data=cia, aes(x=death_rate)) +
   geom_histogram(bins = 30, aes(fill = continent)) + 
   geom_vline(xintercept = median(cia$death_rate), col=rgb(.2,.6,.9)) + 
   xlab("Death Rate - deaths per 1,000 people") + 
-  ylab("Count")
+  ylab("Count")  + ggtitle('Figure 3')
 ```
 ```{r,echo=FALSE,warning=FALSE}
 ggplot (data=cia, aes(x=life_exp_at_birth)) + 
   geom_histogram(bins = 30, aes(color = death_rate, fill=continent)) +
   geom_vline(xintercept = median(cia$life_exp_at_birth), col=rgb(.2,.6,.9)) + 
   xlab("Life Expectancy at Birth - years") + 
-  ylab("Count")
+  ylab("Count") + ggtitle('Figure 4')
 ```
 
 
+
+### Statistical methods
+#### Figure 5
 ```{r}
 continentmembercounts <- cia %>% 
   group_by(continent) %>%
@@ -140,5 +144,43 @@ groups <- cia %>%
       )
 groups
 ```
+```{r}
+noafrica <- cia %>% 
+  filter(continent != "Africa")
 
+ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 6 - Africa Excluded')
+
+lm_mod_noafrica <- lm(life_exp_at_birth ~ internet_usage_proportion, data=noafrica)
+summary(lm_mod_noafrica)
+```
+
+
+```{r}
+
+lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
+summary(lm_mod)
+
+
+```
+### Statistical Methods:
+
+In performing an observational study, we are limited in the viability of performing randomization tests on our data. We can find correlations in our plots using R^2 and find the differences in means between different categorical groups, in our case Continents seems apt for a geopolitical analysis of the data. However, given that our sample population is itself the true population of all countries, there are no methods by which we can fabricate more samples via bootstrapping.
+
+So as to glean a better understanding of the data observed, several steps were taken to parse from it usable information. These included:
+
+Calculating the R^2: 0.5
+
+Finding the mean birth rate per continent: (See Figure Six) 
+
+Finding the difference from the mean of the mean birth rates per continent: (See Figure Six)
+
+### Analysis of Data Visualizations:
+
+Figure One: The proportion of internet users in the population of a given country correlates positively with life expectancy at birth. As indicated by the shading — indicating continent — these trends are not evenly dispersed across the nations of the world. Africa is clustered largely around the bottom left, with lower internet usership and life expectancy, while Europe is largely clustered in the top right, with higher internet usership and life expectancy. Oceania, Asia and the Americas are distributed across the plot. 
+
+Figure Two: Birth rate appears to be inversely proportional to life expectancy at birth, meaning that individuals in countries with higher life expectancy tend to have fewer children. As indicated by the shading — indicating continent — these trends are not evenly dispersed across the nations of the world. Africa and Europe again find themselves at opposing ends of the plot, with higher birth rates, lower life expectancy, and lower birth rates, higher life expectancy respectively. Once more, Oceania, Asia, and the Americas lie dispersed in the middle. 
+
+Figure Three: Africa and Europe take the upper end of our death rate histogram, with Asia, Oceania, and the Americas occupying the lower end. Africa seems to have the largest range in death rate. The graph takes a minor lower skew, though it makes an asymmetrical peak in greatest frequency around 8 deaths per 1,000 population.
+
+Figure Four: Africa takes most of the lower end of our life expectancy histogram, while the Americas, Asia, Europe, and Oceania carry similar ranges, with Asia as the lower of the bunch and Europe as the upper of the bunch. Life expectancy seems to have an upper skew across all countries, with the highest frequency occurring around the 75-76 range.
 
