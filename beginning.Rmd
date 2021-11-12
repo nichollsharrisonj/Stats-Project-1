@@ -5,8 +5,13 @@ output:
 ---
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(countrycode)
 passwords <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-14/passwords.csv')
 cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project 1/Stats-Project-1/cia_factbook.csv') #Change this to your csv's directory
+cia <- cia %>% mutate(
+  continent = countrycode(country,origin="country.name",destination="continent")
+  
+)
 ```
 
 # Statistics Project – Math 141
@@ -21,7 +26,7 @@ In a given nation, does the proportion of the population using the internet corr
 
 
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = birth_rate)) + xlab('Internet users / population') + ylab('Life Expentancy at birth')
+ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = continent)) + xlab('Internet users / population') + ylab('Life Expentancy at birth')
 ```
 
 
@@ -97,7 +102,7 @@ glimpse(cia)
 
 
 ```{r, echo = FALSE, warning=FALSE}
-ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = death_rate))
+ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent))
 ```
 
 
@@ -107,3 +112,7 @@ ggplot (data=cia, aes(x=death_rate)) + geom_histogram(bins = 60, aes(color = dea
 ```{r,echo=FALSE,warning=FALSE}
 ggplot (data=cia, aes(x=life_exp_at_birth)) + geom_histogram(bins = 60, aes(color = death_rate))
 ```
+
+
+
+
