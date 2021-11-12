@@ -26,7 +26,7 @@ In a given nation, does the proportion of the population using the internet corr
 
 
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = continent)) + xlab('Internet users / population') + ylab('Life Expentancy at birth')
+ggplot (data=cia, aes(x=internet_users/population, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=population)) + xlab('Internet users / population') + ylab('Life Expentancy at birth')
 ```
 
 
@@ -102,15 +102,15 @@ glimpse(cia)
 
 
 ```{r, echo = FALSE, warning=FALSE}
-ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent))
+ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=population))
 ```
 
 
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=death_rate)) + geom_histogram(bins = 60, aes(color = death_rate))
+ggplot (data=cia, aes(x=death_rate)) + geom_histogram(bins = 30, aes(fill = continent))
 ```
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=life_exp_at_birth)) + geom_histogram(bins = 60, aes(color = death_rate))
+ggplot (data=cia, aes(x=life_exp_at_birth)) + geom_histogram(bins = 30, aes(color = death_rate,fill=continent))
 ```
 
 
