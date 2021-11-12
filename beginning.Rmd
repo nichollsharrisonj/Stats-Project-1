@@ -144,6 +144,17 @@ groups <- cia %>%
       )
 groups
 ```
+##### Linear model with Africa included
+```{r}
+
+lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
+summary(lm_mod)
+
+```
+
+
+
+
 ```{r}
 noafrica <- cia %>% 
   filter(continent != "Africa")
@@ -155,13 +166,6 @@ summary(lm_mod_noafrica)
 ```
 
 
-```{r}
-
-lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
-summary(lm_mod)
-
-
-```
 ### Statistical Methods:
 
 In performing an observational study, we are limited in the viability of performing randomization tests on our data. We can find correlations in our plots using R^2 and find the differences in means between different categorical groups, in our case Continents seems apt for a geopolitical analysis of the data. However, given that our sample population is itself the true population of all countries, there are no methods by which we can fabricate more samples via bootstrapping.
@@ -182,5 +186,6 @@ Figure Two: Birth rate appears to be inversely proportional to life expectancy a
 
 Figure Three: Africa and Europe take the upper end of our death rate histogram, with Asia, Oceania, and the Americas occupying the lower end. Africa seems to have the largest range in death rate. The graph takes a minor lower skew, though it makes an asymmetrical peak in greatest frequency around 8 deaths per 1,000 population.
 
-Figure Four: Africa takes most of the lower end of our life expectancy histogram, while the Americas, Asia, Europe, and Oceania carry similar ranges, with Asia as the lower of the bunch and Europe as the upper of the bunch. Life expectancy seems to have an upper skew across all countries, with the highest frequency occurring around the 75-76 range.
+Figure Four: Africa takes most of the lower end of our life expectancy histogram, while the Americas, Asia, Europe, and Oceania carry similar ranges, with Asia as the lower of the bunch and Europe as the upper of the four. Life expectancy seems to have an upper skew across all countries, with the highest frequency occurring around the 75-76 range.
 
+Figure Six: In excluding Africa, we are provided with a new angle on Figure One. While the relationship is the same, the correlation appears to be less strong. The bias seen in Figure One also appears lower.
