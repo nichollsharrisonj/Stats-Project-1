@@ -102,15 +102,15 @@ glimpse(cia)
 
 
 ```{r, echo = FALSE, warning=FALSE}
-ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=population))
+ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=population)) + xlab("Birth Rate - births per 1,000 people") + ylab("Life Expentancy At Birth")
 ```
 
 
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=death_rate)) + geom_histogram(bins = 30, aes(fill = continent))
+ggplot (data=cia, aes(x=death_rate)) + geom_histogram(bins = 30, aes(fill = continent)) + xlab("Death Rate - deaths per 1,000 people") + ylab("Count")
 ```
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=life_exp_at_birth)) + geom_histogram(bins = 30, aes(color = death_rate,fill=continent))
+ggplot (data=cia, aes(x=life_exp_at_birth)) + geom_histogram(bins = 30, aes(color = death_rate,fill=continent)) + xlab("Life Expectancy at Birth - years") + ylab("Count")
 ```
 
 
