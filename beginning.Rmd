@@ -7,13 +7,15 @@ output:
 library(tidyverse)
 library(countrycode)
 library(dplyr)
-passwords <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-14/passwords.csv')
+
 cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project 1/Stats-Project-1/cia_factbook.csv') #Change this to your csv's directory
+
 cia <- cia %>% mutate(
   continent = countrycode(country,origin="country.name",destination="continent"),
   density = (population/area),
   internet_usage_proportion = internet_users/population
 )
+
 cia <- na.omit(cia) #OMIT ALL ROWS WITH ANY NA VALUES
 ```
 
@@ -24,15 +26,14 @@ cia <- na.omit(cia) #OMIT ALL ROWS WITH ANY NA VALUES
 
 #### CIA Factbook
 
+
 ### Question:
 
 In a given nation, does the proportion of the population using the internet correlate to life expectancy at birth?
 
+### Hypothesis:
 
-```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
-```
-
+There is a correlation between the proportion of the population using the internet and life expectancy at birth within a given nation.
 
 
 #### Dataset:
@@ -86,6 +87,7 @@ Life expectancy at birth compares the average number of years to be lived by a g
 #### Internet users – Numerical - Discrete
 Internet users compares the number of users within a country that access the Internet. Statistics vary from country to country and may include users who access the Internet at least several times a week to those who access it only once within a period of several months.
 
+> *Note: We also used the “countrycode” package in R to add the categorical variable of continent to our data.*
 
 ## Further Research:
 Lee, Cheng-Wen, [The Relationship between Internet Environment and Life Expectancy in Asia](http://buscompress.com/uploads/3/4/9/8/34980536/riber_8-2_06_m18-053_70-80.pdf)
@@ -99,17 +101,20 @@ Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, [Examining the Relati
 \newpage
 ### Exploratory plots:
 
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
+```
 
 ```{r,echo=FALSE,warning=FALSE}
 glimpse(cia)
 ```
 
-
+\newpage
 ```{r, echo = FALSE, warning=FALSE}
 ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent,size = density)) + xlab("Birth Rate - births per 1,000 people") + ylab("Life Expentancy At Birth")  + ggtitle('Figure 2')
 ```
 
-
+\newpage
 ```{r,echo=FALSE,warning=FALSE}
 ggplot (data=cia, aes(x=death_rate)) + 
   geom_histogram(bins = 30, aes(fill = continent)) + 
@@ -117,6 +122,8 @@ ggplot (data=cia, aes(x=death_rate)) +
   xlab("Death Rate - deaths per 1,000 people") + 
   ylab("Count")  + ggtitle('Figure 3')
 ```
+
+\newpage
 ```{r,echo=FALSE,warning=FALSE}
 ggplot (data=cia, aes(x=life_exp_at_birth)) + 
   geom_histogram(bins = 30, aes(color = death_rate, fill=continent)) +
@@ -127,9 +134,9 @@ ggplot (data=cia, aes(x=life_exp_at_birth)) +
 
 
 
-### Statistical methods
-#### Figure 5
-```{r}
+\newpage
+### Figure 5
+```{r,echo=FALSE,warning=FALSE}
 continentmembercounts <- cia %>% 
   group_by(continent) %>%
   count()
@@ -144,7 +151,9 @@ groups <- cia %>%
       )
 groups
 ```
-##### Linear model with Africa included
+
+### Figure 6 - Linear model with Africa included
+
 ```{r}
 
 lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
@@ -154,29 +163,39 @@ summary(lm_mod)
 
 
 
-
+\newpage
 ```{r}
 noafrica <- cia %>% 
   filter(continent != "Africa")
 
-ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 6 - Africa Excluded')
+ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_birth)) +
+  geom_point(aes(color = continent,size=density)) + 
+  xlab('Internet users / population') + 
+  ylab('Life Expentancy at birth') + 
+  ggtitle('Figure 7 - Africa Excluded')
+```
 
+### Figure 8 - Linear model with Africa Excluded
+```{r}
 lm_mod_noafrica <- lm(life_exp_at_birth ~ internet_usage_proportion, data=noafrica)
 summary(lm_mod_noafrica)
 ```
 
 
+\newpage
+
 ### Statistical Methods:
 
 In performing an observational study, we are limited in the viability of performing randomization tests on our data. We can find correlations in our plots using R^2 and find the differences in means between different categorical groups, in our case Continents seems apt for a geopolitical analysis of the data. However, given that our sample population is itself the true population of all countries, there are no methods by which we can fabricate more samples via bootstrapping.
 
-So as to glean a better understanding of the data observed, several steps were taken to parse from it usable information. These included:
+Figure Five: Here we have found the mean birth rate of each continent, and each mean’s difference from the global mean. From this we can glean that the Americas, Asia, and Oceania all lie very close to the global mean, while Africa and Europe both fall in the upper and lower end respectively. 
 
-Calculating the R^2: 0.5
+*We noticed that when graphing life expectancy against internet usage while coloring the points by continent, almost the entire lower section of outliers was comprised of countries in Africa. We therefore theorized that internet usage only begins to correlate linearly with life expectancy at some threshold value (~65 years), which hardly any African countries meet. Based on this, we decided to see how the data would look with Africa excluded. Figures 7 and 8 reflect the results of this exploration.*
 
-Finding the mean birth rate per continent: (See Figure Six) 
+Figure Six, Figure Seven, and Figure Eight: Here we have generated linear models based on Figure 1, and computed R^2 of each linear model within the graphs. The greatest R^2 value, and thereby the best-fit linear model, is calculated to be that of Figure Six, the graph which includes all countries, rather than Figure Seven or Figure Eight which exclude countries in the continent of Africa.
 
-Finding the difference from the mean of the mean birth rates per continent: (See Figure Six)
+To further explore our findings, we plan to make plots of the residuals and include lines of best fit. The residuals will give us insight into the biases in our scatterplots, and allow us to determine how appropriate linear models are for comparing internet usage and life expectancy. Although excluding Africa yields a worse R^2 value, it may be that the residuals form a distribution closer to normal, meaning that it is more suited to a linear model than the alternative.
+
 
 ### Analysis of Data Visualizations:
 
@@ -188,4 +207,6 @@ Figure Three: Africa and Europe take the upper end of our death rate histogram, 
 
 Figure Four: Africa takes most of the lower end of our life expectancy histogram, while the Americas, Asia, Europe, and Oceania carry similar ranges, with Asia as the lower of the bunch and Europe as the upper of the four. Life expectancy seems to have an upper skew across all countries, with the highest frequency occurring around the 75-76 range.
 
-Figure Six: In excluding Africa, we are provided with a new angle on Figure One. While the relationship is the same, the correlation appears to be less strong. The bias seen in Figure One also appears lower.
+Figure 7: In excluding Africa, we are provided with a new angle on Figure One. While the relationship is the same, bias appears lower. Despite this, the correlation without Africa turns out to be lower than when Africa is included.
+
+> *Note: In all of our scatterplots, the dots representing countries have size indicating their population density. We are using this technique to explore multiple aspects of each country’s data, and it doesn’t have a direct bearing on our analysis at the moment.* 
