@@ -22,7 +22,7 @@ cia <- na.omit(cia) #OMIT ALL ROWS WITH ANY NA VALUES
 
 # Statistics Project – Math 141
 
-## Dashiel Ward, Gavin Rimmer, Bailee Brunsmann, Harrison Nicholls
+## Dashiell Ward, Gavin Rimmer, Bailee Brunsmann, Harrison Nicholls
 
 #### CIA Factbook
 
