@@ -35,6 +35,9 @@ In a given nation, does the proportion of the population using the internet corr
 
 There is a correlation between the proportion of the population using the internet and life expectancy at birth within a given nation.
 
+$H_0: m = 0$
+
+$H_A: m \ne 0$
 
 #### Dataset:
 
