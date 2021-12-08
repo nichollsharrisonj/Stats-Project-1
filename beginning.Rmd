@@ -39,6 +39,19 @@ $H_0: \beta_1 = 0$
 
 $H_A: \beta_1 \ne 0$
 
+
+
+Technical Conditions
+
+Linearity. The scatterplot of the explanatory and response must be nearly linear.
+
+Independent Observations. The samples must be independent.
+
+Normally Distributed Residuals. The errors must show a nearly normal distribution.
+
+Constant or equal variability. The error must exhibit homoscedasticity.
+
+
 #### Dataset:
 
 
@@ -107,6 +120,19 @@ Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, [Examining the Relati
 ```{r,echo=FALSE,warning=FALSE}
 ggplot (data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
 ```
+```{r}
+life_exp <- cia$life_exp_at_birth
+s <- sd(life_exp)
+se <- s/sqrt(length(life_exp))
+se
+
+t <- 23.459 / se
+t
+df = length(life_exp) - 2 
+df
+2*pt(t,df)
+```
+
 
 ```{r,echo=FALSE,warning=FALSE}
 glimpse(cia)
