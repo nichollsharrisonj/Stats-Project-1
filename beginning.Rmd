@@ -130,7 +130,9 @@ t <- 23.459 / se
 t
 df = length(life_exp) - 2 
 df
-2*pt(t,df)
+2*qt(t,df)
+
+
 ```
 
 
