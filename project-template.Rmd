@@ -1,0 +1,38 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is a synopsis of the analysis that will be performed. The Introduction's objective is to bring the reader in the picture and contextualize the research/experiment. The following elements might be used in the introduction:
+
+* A quick summary of earlier research (relevant literature) to provide context - summarize key information from scientific literature, mentioning references to back up each remark.
+* If there is one, provide the hypothesis (an notion or concept that may be evaluated by testing).
+* A description of the various approaches and their applications.
+* A declaration of your goal(s) - what you want to achieve.
+
+This section should include your background research, research questions, hypothesis statements, and data description.
+
+## Data Exploration
+
+This section explains your observations of the data the lead to your research question. Here, you can show figures, diagrams, tables, and other visualization techniques.
+
+## Methods
+
+This section should include the processes you took on performing your statistical method. You can show your R code if you choose.
+
+## Results and Discussions
+
+This section should include the results of your statistical analysis and discuss them in context of your research question. You can still include figures and tables here.
+
+## Conclusions
+
+This is a summary of your argument or experiment/research, and it should be related to the introduction. The Conclusion should just be a few words long and should restate the results of your experiment/research. Suggestions about how to enhance the technique and what additional tests or study might be beneficial are welcome.
+
+## References
+
+You can use APA style citations. [Delvin et. al. 2014] or [Pyrczak et. al. 2016]
+
+1. Delvin, E., Pillay, T. S., & Newman, A. (2014). How to write a scientific paper: practical guidelines. EJIFCC, 25(3), 259.
+
+2. Pyrczak, F. (2016). Writing empirical research reports: A basic guide for students of the social and behavioral sciences. Routledge.
