@@ -125,7 +125,7 @@ p_lower <- .025
 p_upper <- 1-(.025)
 
 # Create a confidence interval of stat using quantiles
-quantile(perm_ci$stat,c(p_lower,p_upper))
+ci_africa <- quantile(perm_ci$stat,c(p_lower,p_upper))
 
 ```
 
@@ -196,7 +196,7 @@ p_lower <- .025
 p_upper <- 1-(.025)
 
 # Create a confidence interval of stat using quantiles
-quantile(perm_ci_noafrica$stat,c(p_lower,p_upper))
+ci_noafrica <- quantile(perm_ci_noafrica$stat,c(p_lower,p_upper))
 
 ```
 
@@ -230,6 +230,12 @@ plot4
 plot11
 grid.arrange(plot5 + ggtitle("Figure 11"), plot12 + ggtitle("Figure 12"), ncol=2)
 grid.arrange(plot8 + ggtitle("Figure 13"), plot13 + ggtitle("Figure 14"), ncol=2)
+```
 
+\newpage
+### Confidence intervals
+```{r,echo=FALSE,warning=FALSE}
+ci_africa
+ci_noafrica
 ```
 
