@@ -1,0 +1,216 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+  include: FALSE
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(countrycode)
+library(dplyr)
+library(infer)
+```
+
+```{r, include=FALSE}
+cia <- readr::read_csv("https://raw.githubusercontent.com/nichollsharrisonj/Stats-Project-1/master/cia_factbook.csv")
+
+
+cia <- cia %>% mutate(
+  continent = countrycode(country,origin="country.name",destination="continent"),
+  density = (population/area),
+  internet_usage_proportion = internet_users/population
+)
+
+cia <- na.omit(cia) #OMIT ALL ROWS WITH ANY NA VALUES
+```
+
+
+### Figure 1
+
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
+```
+
+### Figure 2
+
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=internet_usage_proportion)) + 
+  geom_histogram(bins = 12, aes(fill = continent)) + 
+  geom_vline(xintercept = median(cia$internet_usage_proportion), col=rgb(.2,.6,.9)) + 
+  xlab("Internet Usage Proportion") + 
+  ylab("Count")  + ggtitle('Figure 2')
+```
+
+### Figure 3
+
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=life_exp_at_birth)) + 
+  geom_histogram(bins = 12, aes(color = death_rate, fill=continent)) +
+  geom_vline(xintercept = median(cia$life_exp_at_birth), col=rgb(.2,.6,.9)) + 
+  xlab("Life Expectancy at Birth - years") + 
+  ylab("Count") + ggtitle('Figure 3')
+```
+
+### Figure 4
+
+```{r}
+lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
+obs_slope <- lm_mod$coefficients[2]
+summary(lm_mod)
+```
+
+### Figure 5
+
+```{r}
+
+set.seed(1009)
+perm_slope <- cia %>%
+   specify(life_exp_at_birth ~ internet_usage_proportion) %>%
+   hypothesize(null = "independence") %>%
+   generate(reps = 1000, type = "permute") %>%
+   calculate(stat = "slope")
+
+ggplot(data=perm_slope, aes(x=stat)) + 
+   geom_histogram(bins=100) +
+   geom_vline(xintercept = obs_slope,
+              color = "#F05133") + ggtitle("Figure 5") 
+  xlim(-30,30)
+
+```
+
+### Figure 6
+
+```{r}
+lm_res <- resid(lm_mod)
+lm_res <- data.frame(resid = lm_res)
+lm_res <- lm_res %>% mutate(internet_usage_proportion = cia$internet_usage_proportion)
+histogram <- ggplot(data=lm_res, aes(x=resid))
+histogram + geom_histogram(binwidth=1, color="black") + 
+  xlab("Residuals") +  ylab("Frequency") + ggtitle("Figure 6: Histogram of Residuals")
+```
+
+### Figure 7
+```{r}
+scatter <- ggplot(data=lm_res, aes(x = internet_usage_proportion, y =resid))
+scatter + geom_point(size = 1.5) + 
+  xlab("Internet Usage Proportion") +  ylab("Residual")  +
+  geom_hline(yintercept=0, linetype='dashed', col = 'red') +
+  ggtitle("Figure 7: Internet Usage Proportion vs Residuals")
+```
+
+### Figure 8
+
+```{r}
+set.seed(34209)
+perm_ci <- cia %>% 
+  specify(life_exp_at_birth ~ internet_usage_proportion) %>%  
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "slope")
+visualize(perm_ci)
+```
+
+### Figure 9
+
+```{r}
+alpha <- .05
+
+#lower percentile cutoff
+p_lower <- .025
+
+#upper percentile cutoff
+p_upper <- 1-(.025)
+
+# Create a confidence interval of stat using quantiles
+quantile(perm_ci$stat,c(p_lower,p_upper))
+
+```
+
+### Figure 10
+
+```{r}
+noafrica <- cia %>% 
+  filter(continent != "Africa")
+
+ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_birth)) +
+  geom_point(aes(color = continent,size=density)) + 
+  xlab('Internet users / population') + 
+  ylab('Life Expentancy at birth') + 
+  ggtitle('Figure 10:  Africa Excluded')
+
+
+```
+
+### Figure 11
+
+```{r}
+lm_mod_noafrica <- lm(life_exp_at_birth ~ internet_usage_proportion, data=noafrica)
+obs_slope_noafrica <- lm_mod_noafrica$coefficients[2]
+obs_slope_noafrica
+summary(lm_mod_noafrica)
+```
+
+### Figure 12
+
+```{r}
+set.seed(1010)
+perm_slope_noafrica <- noafrica %>%
+   specify(life_exp_at_birth ~ internet_usage_proportion) %>%
+   hypothesize(null = "independence") %>%
+   generate(reps = 1000, type = "permute") %>%
+   calculate(stat = "slope")
+
+ggplot(data=perm_slope_noafrica, aes(x=stat)) + 
+   geom_histogram(bins=100) +
+   geom_vline(xintercept = obs_slope_noafrica,
+              color = "#F05133") + 
+   ggtitle("Figure 12")
+  xlim(-20,20)
+```
+
+### Figure 13
+
+```{r}
+set.seed(34210)
+perm_ci_noafrica <- noafrica %>% 
+  specify(life_exp_at_birth ~ internet_usage_proportion) %>%  
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "slope")
+visualize(perm_ci_noafrica)
+```
+
+### Figure 14
+
+```{r}
+alpha <- .05
+
+#lower percentile cutoff
+p_lower <- .025
+
+#upper percentile cutoff
+p_upper <- 1-(.025)
+
+# Create a confidence interval of stat using quantiles
+quantile(perm_ci_noafrica$stat,c(p_lower,p_upper))
+
+```
+
+### Figure 15
+
+```{r}
+lm_res_noafrica <- resid(lm_mod_noafrica)
+lm_res_noafrica <- data.frame(resid = lm_res_noafrica)
+lm_res_noafrica <- lm_res_noafrica %>% mutate(internet_usage_proportion = noafrica$internet_usage_proportion)
+histogram <- ggplot(data=lm_res_noafrica, aes(x=resid))
+histogram + geom_histogram(binwidth=1, color="black") + 
+  xlab("Residuals") +  ylab("Frequency") + ggtitle("Figure 15: Histogram of Residuals with Africa Excluded")
+```
+
+### Figure 16
+
+```{r}
+scatter <- ggplot(data=lm_res_noafrica, aes(x = internet_usage_proportion, y =resid))
+scatter + geom_point(size = 1.5) + 
+  xlab("Internet Usage Proportion") +  ylab("Residual")  +
+  geom_hline(yintercept=0, linetype='dashed', col = 'red') +
+  ggtitle("Figure 16: Internet Usage Proportion vs Residuals with Africa Excluded")
+```

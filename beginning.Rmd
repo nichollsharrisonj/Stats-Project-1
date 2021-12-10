@@ -128,18 +128,6 @@ ggplot (data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_
 ```
 
 
-```{r}
-life_exp <- cia$life_exp_at_birth
-s <- sd(life_exp)
-se <- s/sqrt(length(life_exp))
-se
-t <- 23.459 / se
-t
-df = length(life_exp) - 2 
-df
-2*qt(t,df)
-```
-
 \newpage
 
 ```{r, echo = FALSE, warning=FALSE}
@@ -283,6 +271,7 @@ ggplot(data=perm_slope_noafrica, aes(x=stat)) +
   xlim(-20,20)
 
 ```
+
 ```{r}
 set.seed(34210)
 perm_ci_noafrica <- noafrica %>% 
@@ -305,7 +294,7 @@ p_upper <- 1-(.025)
 quantile(perm_ci_noafrica$stat,c(p_lower,p_upper))
 
 ```
-```
+
 
 ```{r}
 lm_res_noafrica <- resid(lm_mod_noafrica)
