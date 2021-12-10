@@ -7,7 +7,11 @@ output:
 library(tidyverse)
 library(countrycode)
 library(dplyr)
+library(infer)
+```
 
+
+```{r}
 cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project 1/Stats-Project-1/cia_factbook.csv') #Change this to your csv's directory
 
 cia <- cia %>% mutate(
@@ -120,27 +124,22 @@ Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, [Examining the Relati
 ```{r,echo=FALSE,warning=FALSE}
 ggplot (data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
 ```
+
+
 ```{r}
 life_exp <- cia$life_exp_at_birth
 s <- sd(life_exp)
 se <- s/sqrt(length(life_exp))
 se
-
 t <- 23.459 / se
 t
 df = length(life_exp) - 2 
 df
 2*qt(t,df)
-
-
-```
-
-
-```{r,echo=FALSE,warning=FALSE}
-glimpse(cia)
 ```
 
 \newpage
+
 ```{r, echo = FALSE, warning=FALSE}
 ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent,size = density)) + xlab("Birth Rate - births per 1,000 people") + ylab("Life Expentancy At Birth")  + ggtitle('Figure 2')
 ```
@@ -166,33 +165,61 @@ ggplot (data=cia, aes(x=life_exp_at_birth)) +
 
 
 \newpage
-### Figure 5
-```{r,echo=FALSE,warning=FALSE}
-continentmembercounts <- cia %>% 
-  group_by(continent) %>%
-  count()
-
-groups <- cia %>%
-  group_by(continent) %>%
-  select(birth_rate) %>%
-  summarize(
-    birth_rate = mean(birth_rate)) %>%
-  mutate(
-    difference_from_mean = birth_rate - mean(cia$birth_rate)
-      )
-groups
-```
 
 ### Figure 6 - Linear model with Africa included
 
 ```{r}
-
 lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
+
 summary(lm_mod)
 
+obs_slope <- lm_mod$coefficients[2]
 ```
 
 
+```{r}
+
+set.seed(1009)
+perm_slope <- cia %>%
+   specify(life_exp_at_birth ~ internet_usage_proportion) %>%
+   hypothesize(null = "independence") %>%
+   generate(reps = 1000, type = "permute") %>%
+   calculate(stat = "slope")
+
+ggplot(data=perm_slope, aes(x=stat)) + 
+   geom_histogram(bins=100) +
+   geom_vline(xintercept = obs_slope,
+              color = "#F05133") + 
+  xlim(-30,30)
+
+```
+
+The observed slope is nowhere near our slopes obtained by permuting the data.   we are certain that we can reject the null hypothesis.
+
+```{r}
+set.seed(34209)
+perm_ci <- cia %>% 
+  specify(life_exp_at_birth ~ internet_usage_proportion) %>%  
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "slope")
+visualize(perm_ci)
+```
+
+
+```{r}
+alpha <- .05
+
+#lower percentile cutoff
+p_lower <- .025
+
+#upper percentile cutoff
+p_upper <- 1-(.025)
+
+# Create a confidence interval of stat using quantiles
+quantile(perm_ci$stat,c(p_lower,p_upper))
+
+```
+Our 95% confidence interval for slope of the data with Africa included is (20.392,26.506). The null slope of 0 is not included within this confidence interval.
 
 \newpage
 ```{r}
@@ -204,12 +231,61 @@ ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_birth)) +
   xlab('Internet users / population') + 
   ylab('Life Expentancy at birth') + 
   ggtitle('Figure 7 - Africa Excluded')
+
+
 ```
 
 ### Figure 8 - Linear model with Africa Excluded
 ```{r}
 lm_mod_noafrica <- lm(life_exp_at_birth ~ internet_usage_proportion, data=noafrica)
 summary(lm_mod_noafrica)
+
+obs_slope_noafrica <- lm_mod_noafrica$coefficients[2]
+
+obs_slope_noafrica
+```
+
+
+### Inference with no Africa
+
+```{r}
+
+set.seed(1010)
+perm_slope_noafrica <- noafrica %>%
+   specify(life_exp_at_birth ~ internet_usage_proportion) %>%
+   hypothesize(null = "independence") %>%
+   generate(reps = 1000, type = "permute") %>%
+   calculate(stat = "slope")
+
+ggplot(data=perm_slope_noafrica, aes(x=stat)) + 
+   geom_histogram(bins=100) +
+   geom_vline(xintercept = obs_slope_noafrica,
+              color = "#F05133") + 
+  xlim(-20,20)
+
+```
+```{r}
+set.seed(34210)
+perm_ci_noafrica <- noafrica %>% 
+  specify(life_exp_at_birth ~ internet_usage_proportion) %>%  
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "slope")
+visualize(perm_ci_noafrica)
+```
+
+```{r}
+alpha <- .05
+
+#lower percentile cutoff
+p_lower <- .025
+
+#upper percentile cutoff
+p_upper <- 1-(.025)
+
+# Create a confidence interval of stat using quantiles
+quantile(perm_ci_noafrica$stat,c(p_lower,p_upper))
+
+```
 ```
 
 
