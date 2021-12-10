@@ -1,0 +1,271 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(countrycode)
+library(dplyr)
+
+cia <- readr::read_csv("https://raw.githubusercontent.com/nichollsharrisonj/Stats-Project-1/master/cia_factbook.csv")
+
+
+cia <- cia %>% mutate(
+  continent = countrycode(country,origin="country.name",destination="continent"),
+  density = (population/area),
+  internet_usage_proportion = internet_users/population
+)
+
+cia <- na.omit(cia) #OMIT ALL ROWS WITH ANY NA VALUES
+```
+
+
+# Statistics Project – Math 141
+
+## Dashiell Ward, Gavin Rimmer, Bailee Brunsmann, Harrison Nicholls
+
+#### CIA Factbook
+
+
+### Question:
+
+In a given nation, does the proportion of the population using the internet correlate to life expectancy at birth?
+
+### Hypothesis:
+
+There is a correlation between the proportion of the population using the internet and life expectancy at birth within a given nation.
+
+$H_0: \beta_1 = 0$
+
+$H_A: \beta_1 \ne 0$
+
+
+
+Technical Conditions
+
+Linearity. The scatterplot of the explanatory and response must be nearly linear.
+
+Independent Observations. The samples must be independent.
+
+Normally Distributed Residuals. The errors must show a nearly normal distribution.
+
+Constant or equal variability. The error must exhibit homoscedasticity.
+
+
+#### Dataset:
+
+
+What is it?
+
+- Details on countries
+
+Where does it come from? 
+
+- CIA Factbook
+
+What is the description of each variable?
+
+- See below
+
+
+## Variables:
+
+#### Country - Categorical - Nominal
+Countries recognized by the CIA.
+
+#### Area - Numerical - Continuous
+Land in Square km
+
+#### Infant Mortality Rate - Numerical - Continuous
+Infant mortality rate compares the number of deaths of infants under one year old in a given year per 1,000 live births in the same year. This rate is often used as an indicator of the level of health in a country.
+
+#### Population - Numerical - Discrete
+Population compares estimates from the US Bureau of the Census based on statistics from population censuses, vital statistics registration systems, or sample surveys pertaining to the recent past and on assumptions about future trends.
+
+#### Population growth rate - Numerical - Continuous
+Population growth rate compares the average annual percent change in populations, resulting from a surplus (or deficit) of births over deaths and the balance of migrants entering and leaving a country. The rate may be positive or negative.
+
+#### Birth Rate - Numerical - Continuous
+Birth rate compares the average annual number of births during a year per 1,000 persons in the population at midyear; also known as crude birth rate.
+
+#### Death rate - Numerical - Continuous
+Death rate compares the average annual number of deaths during a year per 1,000 population at midyear; also known as crude death rate.
+
+#### Net migration rate - Numerical - Continuous
+Net Migration rate compares the difference between the number of persons entering and leaving a country during the year per 1,000 persons (based on midyear population).
+
+#### Maternal mortality rate – Numerical - Continuous
+The Maternal mortality rate (MMR) is the annual number of female deaths per 100,000 live births from any cause related to or aggravated by pregnancy or its management (excluding accidental or incidental causes).
+
+#### Life expectancy at birth – Numerical - Discrete
+Life expectancy at birth compares the average number of years to be lived by a group of people born in the same year, if mortality at each age remains constant in the future. Life expectancy at birth is also a measure of overall quality of life in a country and summarizes the mortality at all ages.
+
+#### Internet users – Numerical - Discrete
+Internet users compares the number of users within a country that access the Internet. Statistics vary from country to country and may include users who access the Internet at least several times a week to those who access it only once within a period of several months.
+
+> *Note: We also used the “countrycode” package in R to add the categorical variable of continent to our data.*
+
+## Further Research:
+Lee, Cheng-Wen, [The Relationship between Internet Environment and Life Expectancy in Asia](http://buscompress.com/uploads/3/4/9/8/34980536/riber_8-2_06_m18-053_70-80.pdf)
+
+  Article explores this question specifically in Asia, with relevant take-away in emphasising the disparity between countries with advanced telecommunication services and those without in regards to their general economic development in a globalized market.
+
+Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, [Examining the Relationship between the Internet and Life Expectancy](https://www.researchgate.net/publication/268631883_Examining_the_Relationship_between_the_Internet_and_Life_Expectancy#read)
+
+  Article explores this question globally, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
+
+\newpage
+### Exploratory plots:
+
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
+```
+```{r}
+life_exp <- cia$life_exp_at_birth
+s <- sd(life_exp)
+se <- s/sqrt(length(life_exp))
+se
+
+t <- 23.459 / se
+t
+df = length(life_exp) - 2 
+df
+2*pt(t,df)
+```
+
+
+```{r,echo=FALSE,warning=FALSE}
+glimpse(cia)
+```
+
+\newpage
+```{r, echo = FALSE, warning=FALSE}
+ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color = continent,size = density)) + xlab("Birth Rate - births per 1,000 people") + ylab("Life Expentancy At Birth")  + ggtitle('Figure 2')
+```
+
+\newpage
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=internet_usage_proportion)) + 
+  geom_histogram(bins = 12, aes(fill = continent)) + 
+  geom_vline(xintercept = median(cia$internet_usage_proportion), col=rgb(.2,.6,.9)) + 
+  xlab("Internet Usage Proportion") + 
+  ylab("Count")  + ggtitle('Figure 3')
+```
+
+\newpage
+```{r,echo=FALSE,warning=FALSE}
+ggplot (data=cia, aes(x=life_exp_at_birth)) + 
+  geom_histogram(bins = 12, aes(color = death_rate, fill=continent)) +
+  geom_vline(xintercept = median(cia$life_exp_at_birth), col=rgb(.2,.6,.9)) + 
+  xlab("Life Expectancy at Birth - years") + 
+  ylab("Count") + ggtitle('Figure 4')
+```
+
+
+
+\newpage
+### Figure 5
+```{r,echo=FALSE,warning=FALSE}
+continentmembercounts <- cia %>% 
+  group_by(continent) %>%
+  count()
+
+groups <- cia %>%
+  group_by(continent) %>%
+  select(birth_rate) %>%
+  summarize(
+    birth_rate = mean(birth_rate)) %>%
+  mutate(
+    difference_from_mean = birth_rate - mean(cia$birth_rate)
+      )
+groups
+```
+
+### Figure 6 - Linear model with Africa included
+
+```{r}
+
+lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
+summary(lm_mod)
+
+```
+
+```{r}
+lm_res <- resid(lm_mod)
+lm_res <- data.frame(resid = lm_res)
+lm_res <- lm_res %>% mutate(internet_usage_proportion = cia$internet_usage_proportion)
+histogram <- ggplot(data=lm_res, aes(x=resid))
+histogram + geom_histogram(binwidth=1, color="black") + 
+  xlab("Residuals") +  ylab("Frequency") + ggtitle("Histogram of Residuals")
+
+scatter <- ggplot(data=lm_res, aes(x = internet_usage_proportion, y =resid))
+scatter + geom_point(size = 1.5) + 
+  xlab("Internet Usage Proportion") +  ylab("Residual")  +
+  geom_hline(yintercept=0, linetype='dashed', col = 'red') +
+  ggtitle("Internet Usage Proportion vs Residuals")
+```
+
+
+\newpage
+```{r}
+noafrica <- cia %>% 
+  filter(continent != "Africa")
+
+ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_birth)) +
+  geom_point(aes(color = continent,size=density)) + 
+  xlab('Internet users / population') + 
+  ylab('Life Expentancy at birth') + 
+  ggtitle('Figure 7 - Africa Excluded')
+```
+
+### Figure 8 - Linear model with Africa Excluded
+```{r}
+lm_mod_noafrica <- lm(life_exp_at_birth ~ internet_usage_proportion, data=noafrica)
+summary(lm_mod_noafrica)
+```
+
+```{r}
+lm_res_noafrica <- resid(lm_mod_noafrica)
+lm_res_noafrica <- data.frame(resid = lm_res_noafrica)
+lm_res_noafrica <- lm_res_noafrica %>% mutate(internet_usage_proportion = noafrica$internet_usage_proportion)
+histogram <- ggplot(data=lm_res_noafrica, aes(x=resid))
+histogram + geom_histogram(binwidth=1, color="black") + 
+  xlab("Residuals") +  ylab("Frequency") + ggtitle("Histogram of Residuals with Africa Excluded")
+
+scatter <- ggplot(data=lm_res_noafrica, aes(x = internet_usage_proportion, y =resid))
+scatter + geom_point(size = 1.5) + 
+  xlab("Internet Usage Proportion") +  ylab("Residual")  +
+  geom_hline(yintercept=0, linetype='dashed', col = 'red') +
+  ggtitle("Internet Usage Proportion vs Residuals with Africa Excluded")
+```
+
+
+\newpage
+
+### Statistical Methods:
+
+In performing an observational study, we are limited in the viability of performing randomization tests on our data. We can find correlations in our plots using R^2 and find the differences in means between different categorical groups, in our case Continents seems apt for a geopolitical analysis of the data. However, given that our sample population is itself the true population of all countries, there are no methods by which we can fabricate more samples via bootstrapping.
+
+Figure Five: Here we have found the mean birth rate of each continent, and each mean’s difference from the global mean. From this we can glean that the Americas, Asia, and Oceania all lie very close to the global mean, while Africa and Europe both fall in the upper and lower end respectively. 
+
+*We noticed that when graphing life expectancy against internet usage while coloring the points by continent, almost the entire lower section of outliers was comprised of countries in Africa. We therefore theorized that internet usage only begins to correlate linearly with life expectancy at some threshold value (~65 years), which hardly any African countries meet. Based on this, we decided to see how the data would look with Africa excluded. Figures 7 and 8 reflect the results of this exploration.*
+
+Figure Six, Figure Seven, and Figure Eight: Here we have generated linear models based on Figure 1, and computed R^2 of each linear model within the graphs. The greatest R^2 value, and thereby the best-fit linear model, is calculated to be that of Figure Six, the graph which includes all countries, rather than Figure Seven or Figure Eight which exclude countries in the continent of Africa.
+
+To further explore our findings, we plan to make plots of the residuals and include lines of best fit. The residuals will give us insight into the biases in our scatterplots, and allow us to determine how appropriate linear models are for comparing internet usage and life expectancy. Although excluding Africa yields a worse R^2 value, it may be that the residuals form a distribution closer to normal, meaning that it is more suited to a linear model than the alternative.
+
+
+### Analysis of Data Visualizations:
+
+Figure One: The proportion of internet users in the population of a given country correlates positively with life expectancy at birth. As indicated by the shading — indicating continent — these trends are not evenly dispersed across the nations of the world. Africa is clustered largely around the bottom left, with lower internet usership and life expectancy, while Europe is largely clustered in the top right, with higher internet usership and life expectancy. Oceania, Asia and the Americas are distributed across the plot. 
+
+Figure Two: Birth rate appears to be inversely proportional to life expectancy at birth, meaning that individuals in countries with higher life expectancy tend to have fewer children. As indicated by the shading — indicating continent — these trends are not evenly dispersed across the nations of the world. Africa and Europe again find themselves at opposing ends of the plot, with higher birth rates, lower life expectancy, and lower birth rates, higher life expectancy respectively. Once more, Oceania, Asia, and the Americas lie dispersed in the middle. 
+
+Figure Three: Africa and Europe take the upper end of our death rate histogram, with Asia, Oceania, and the Americas occupying the lower end. Africa seems to have the largest range in death rate. The graph takes a minor lower skew, though it makes an asymmetrical peak in greatest frequency around 8 deaths per 1,000 population.
+
+Figure Four: Africa takes most of the lower end of our life expectancy histogram, while the Americas, Asia, Europe, and Oceania carry similar ranges, with Asia as the lower of the bunch and Europe as the upper of the four. Life expectancy seems to have an upper skew across all countries, with the highest frequency occurring around the 75-76 range.
+
+Figure 7: In excluding Africa, we are provided with a new angle on Figure One. While the relationship is the same, bias appears lower. Despite this, the correlation without Africa turns out to be lower than when Africa is included.
+
+> *Note: In all of our scatterplots, the dots representing countries have size indicating their population density. We are using this technique to explore multiple aspects of each country’s data, and it doesn’t have a direct bearing on our analysis at the moment.* 

@@ -1,0 +1,50 @@
+11c11,12
+< cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project 1/Stats-Project-1/cia_factbook.csv') #Change this to your csv's directory
+---
+> cia <- readr::read_csv("https://raw.githubusercontent.com/nichollsharrisonj/Stats-Project-1/master/cia_factbook.csv")
+> 
+148,151c149,152
+< ggplot (data=cia, aes(x=death_rate)) + 
+<   geom_histogram(bins = 30, aes(fill = continent)) + 
+<   geom_vline(xintercept = median(cia$death_rate), col=rgb(.2,.6,.9)) + 
+<   xlab("Death Rate - deaths per 1,000 people") + 
+---
+> ggplot (data=cia, aes(x=internet_usage_proportion)) + 
+>   geom_histogram(bins = 12, aes(fill = continent)) + 
+>   geom_vline(xintercept = median(cia$internet_usage_proportion), col=rgb(.2,.6,.9)) + 
+>   xlab("Internet Usage Proportion") + 
+158c159
+<   geom_histogram(bins = 30, aes(color = death_rate, fill=continent)) +
+---
+>   geom_histogram(bins = 12, aes(color = death_rate, fill=continent)) +
+192a194,207
+> ```{r}
+> lm_res <- resid(lm_mod)
+> lm_res <- data.frame(resid = lm_res)
+> lm_res <- lm_res %>% mutate(internet_usage_proportion = cia$internet_usage_proportion)
+> histogram <- ggplot(data=lm_res, aes(x=resid))
+> histogram + geom_histogram(binwidth=1, color="black") + 
+>   xlab("Residuals") +  ylab("Frequency") + ggtitle("Histogram of Residuals")
+> 
+> scatter <- ggplot(data=lm_res, aes(x = internet_usage_proportion, y =resid))
+> scatter + geom_point(size = 1.5) + 
+>   xlab("Internet Usage Proportion") +  ylab("Residual")  +
+>   geom_hline(yintercept=0, linetype='dashed', col = 'red') +
+>   ggtitle("Internet Usage Proportion vs Residuals")
+> ```
+212a228,242
+> ```{r}
+> lm_res_noafrica <- resid(lm_mod_noafrica)
+> lm_res_noafrica <- data.frame(resid = lm_res_noafrica)
+> lm_res_noafrica <- lm_res_noafrica %>% mutate(internet_usage_proportion = noafrica$internet_usage_proportion)
+> histogram <- ggplot(data=lm_res_noafrica, aes(x=resid))
+> histogram + geom_histogram(binwidth=1, color="black") + 
+>   xlab("Residuals") +  ylab("Frequency") + ggtitle("Histogram of Residuals with Africa Excluded")
+> 
+> scatter <- ggplot(data=lm_res_noafrica, aes(x = internet_usage_proportion, y =resid))
+> scatter + geom_point(size = 1.5) + 
+>   xlab("Internet Usage Proportion") +  ylab("Residual")  +
+>   geom_hline(yintercept=0, linetype='dashed', col = 'red') +
+>   ggtitle("Internet Usage Proportion vs Residuals with Africa Excluded")
+> ```
+> 
