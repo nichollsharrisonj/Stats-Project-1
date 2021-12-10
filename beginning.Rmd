@@ -8,7 +8,8 @@ library(tidyverse)
 library(countrycode)
 library(dplyr)
 
-cia <- readr::read_csv('/Users/harrison/Desktop/Statistics/Projects/Project 1/Stats-Project-1/cia_factbook.csv') #Change this to your csv's directory
+cia <- readr::read_csv("https://raw.githubusercontent.com/nichollsharrisonj/Stats-Project-1/master/cia_factbook.csv")
+
 
 cia <- cia %>% mutate(
   continent = countrycode(country,origin="country.name",destination="continent"),
@@ -145,17 +146,17 @@ ggplot (data=cia, aes(x=birth_rate, y=life_exp_at_birth)) + geom_point(aes(color
 
 \newpage
 ```{r,echo=FALSE,warning=FALSE}
-ggplot (data=cia, aes(x=death_rate)) + 
-  geom_histogram(bins = 30, aes(fill = continent)) + 
-  geom_vline(xintercept = median(cia$death_rate), col=rgb(.2,.6,.9)) + 
-  xlab("Death Rate - deaths per 1,000 people") + 
+ggplot (data=cia, aes(x=internet_usage_proportion)) + 
+  geom_histogram(bins = 12, aes(fill = continent)) + 
+  geom_vline(xintercept = median(cia$internet_usage_proportion), col=rgb(.2,.6,.9)) + 
+  xlab("Internet Usage Proportion") + 
   ylab("Count")  + ggtitle('Figure 3')
 ```
 
 \newpage
 ```{r,echo=FALSE,warning=FALSE}
 ggplot (data=cia, aes(x=life_exp_at_birth)) + 
-  geom_histogram(bins = 30, aes(color = death_rate, fill=continent)) +
+  geom_histogram(bins = 12, aes(color = death_rate, fill=continent)) +
   geom_vline(xintercept = median(cia$life_exp_at_birth), col=rgb(.2,.6,.9)) + 
   xlab("Life Expectancy at Birth - years") + 
   ylab("Count") + ggtitle('Figure 4')
@@ -190,6 +191,20 @@ summary(lm_mod)
 
 ```
 
+```{r}
+lm_res <- resid(lm_mod)
+lm_res <- data.frame(resid = lm_res)
+lm_res <- lm_res %>% mutate(internet_usage_proportion = cia$internet_usage_proportion)
+histogram <- ggplot(data=lm_res, aes(x=resid))
+histogram + geom_histogram(binwidth=1, color="black") + 
+  xlab("Residuals") +  ylab("Frequency") + ggtitle("Histogram of Residuals")
+
+scatter <- ggplot(data=lm_res, aes(x = internet_usage_proportion, y =resid))
+scatter + geom_point(size = 1.5) + 
+  xlab("Internet Usage Proportion") +  ylab("Residual")  +
+  geom_hline(yintercept=0, linetype='dashed', col = 'red') +
+  ggtitle("Internet Usage Proportion vs Residuals")
+```
 
 
 \newpage
@@ -208,6 +223,21 @@ ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_birth)) +
 ```{r}
 lm_mod_noafrica <- lm(life_exp_at_birth ~ internet_usage_proportion, data=noafrica)
 summary(lm_mod_noafrica)
+```
+
+```{r}
+lm_res_noafrica <- resid(lm_mod_noafrica)
+lm_res_noafrica <- data.frame(resid = lm_res_noafrica)
+lm_res_noafrica <- lm_res_noafrica %>% mutate(internet_usage_proportion = noafrica$internet_usage_proportion)
+histogram <- ggplot(data=lm_res_noafrica, aes(x=resid))
+histogram + geom_histogram(binwidth=1, color="black") + 
+  xlab("Residuals") +  ylab("Frequency") + ggtitle("Histogram of Residuals with Africa Excluded")
+
+scatter <- ggplot(data=lm_res_noafrica, aes(x = internet_usage_proportion, y =resid))
+scatter + geom_point(size = 1.5) + 
+  xlab("Internet Usage Proportion") +  ylab("Residual")  +
+  geom_hline(yintercept=0, linetype='dashed', col = 'red') +
+  ggtitle("Internet Usage Proportion vs Residuals with Africa Excluded")
 ```
 
 
