@@ -77,9 +77,8 @@ perm_slope <- cia %>%
 
 plot5 <- ggplot(data=perm_slope, aes(x=stat)) + 
    geom_histogram(bins=100) +
-   geom_vline(xintercept = obs_slope,
-              color = "#F05133") + ggtitle("Figure 5") 
-  xlim(-30,30)
+   geom_vline(xintercept = obs_slope, color = "#F05133") + ggtitle("Figure 5") + 
+   xlim(-30,30)
 
 ```
 
@@ -93,7 +92,8 @@ plot6 <- ggplot(data=lm_res, aes(x=resid))+
   geom_histogram(binwidth=1, color="black") +
   xlab("Residuals") +  
   ylab("Frequency") + 
-  ggtitle("Figure 6: Histogram of Residuals")
+  ggtitle("Figure 6: Histogram of Residuals") + 
+  xlim(-20,20)
 ```
 
 
@@ -170,8 +170,8 @@ plot12 <- ggplot(data=perm_slope_noafrica, aes(x=stat)) +
    geom_histogram(bins=100) +
    geom_vline(xintercept = obs_slope_noafrica,
               color = "#F05133") + 
-   ggtitle("Figure 12")
-  xlim(-20,20)
+   ggtitle("Figure 12") +
+   xlim(-30,30)
 ```
 
 
@@ -208,7 +208,8 @@ lm_res_noafrica <- resid(lm_mod_noafrica)
 lm_res_noafrica <- data.frame(resid = lm_res_noafrica)
 lm_res_noafrica <- lm_res_noafrica %>% mutate(internet_usage_proportion = noafrica$internet_usage_proportion)
 plot15 <- ggplot(data=lm_res_noafrica, aes(x=resid)) + geom_histogram(binwidth=1, color="black") + 
-  xlab("Residuals") +  ylab("Frequency") + ggtitle("Figure 15: Histogram of Residuals with Africa Excluded")
+  xlab("Residuals") +  ylab("Frequency") + ggtitle("Figure 15: Histogram of Residuals with Africa Excluded") + 
+  xlim(-20,20)
 ```
 
 
@@ -219,6 +220,85 @@ plot16 <- ggplot(data=lm_res_noafrica, aes(x = internet_usage_proportion, y =res
   geom_hline(yintercept=0, linetype='dashed', col = 'red') +
   ggtitle("Figure 16: Internet Usage Proportion vs Residuals with Africa Excluded")
 ```
+
+
+
+
+# Statistics Project – Math 141
+
+## Dashiell Ward, Gavin Rimmer, Bailee Brunsmann, Harrison Nicholls
+
+#### CIA Factbook
+
+## Introduction
+
+### Hypothesis
+
+There is a correlation between the proportion of the population using the internet and life expectancy at birth within a given nation.
+
+$H_0: B_1 = 0$
+
+$H_A: B_1 \ne 0$
+
+
+## Approach, Declaration of Goals:
+
+There is potentially a correlation between the variables. The average life expectancy in a country could influence internet usage and/or internet usage in a country could influence the average life expectancy.
+
+Through our analysis, our goals are to observe how internet usage and life expectancy affect each other in different nations. Further exploration of this correlation, specifically in countries in Asia, is provided in the first background research article listed. Both background research articles provide insight about other factors that could be influencing or are influenced by the variables we chose to focus on. Economic development appears to have an important connection to technological advancements, which impacts internet accessibility and further, internet usage.
+Additional research related to this subject may be found below.
+
+Lee, Cheng-Wen, The Relationship between Internet Environment and Life Expectancy in Asia
+
+Article explores this question specifically in Asia, with relevant take-away in emphasising the disparity between countries with advanced telecommunication services and those without in regards to their general economic development in a globalized market.
+
+Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, Examining the Relationship between the Internet and Life Expectancy
+
+Article explores this question Globally, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
+
+## Data Exploration
+
+### Dataset: 
+
+Our dataset was Details on Countries, and it was sourced from the CIA factbook. A summary of variables may be found below.
+
+### Variables:
+
+#### Country - Categorical - Nominal
+Countries recognized by the CIA.
+
+#### Area - Numerical - Continuous
+Land in Square km
+
+#### Infant Mortality Rate - Numerical - Continuous
+Infant mortality rate compares the number of deaths of infants under one year old in a given year per 1,000 live births in the same year. This rate is often used as an indicator of the level of health in a country.
+
+#### Population - Numerical - Discrete
+Population compares estimates from the US Bureau of the Census based on statistics from population censuses, vital statistics registration systems, or sample surveys pertaining to the recent past and on assumptions about future trends.
+
+#### Population growth rate - Numerical - Continuous
+Population growth rate compares the average annual percent change in populations, resulting from a surplus (or deficit) of births over deaths and the balance of migrants entering and leaving a country. The rate may be positive or negative.
+
+#### Birth Rate - Numerical - Continuous
+Birth rate compares the average annual number of births during a year per 1,000 persons in the population at midyear; also known as crude birth rate.
+
+#### Death rate - Numerical - Continuous
+Death rate compares the average annual number of deaths during a year per 1,000 population at midyear; also known as crude death rate.
+
+#### Net migration rate - Numerical - Continuous
+Net Migration rate compares the difference between the number of persons entering and leaving a country during the year per 1,000 persons (based on midyear population).
+
+#### Maternal mortality rate – Numerical - Continuous
+The Maternal mortality rate (MMR) is the annual number of female deaths per 100,000 live births from any cause related to or aggravated by pregnancy or its management (excluding accidental or incidental causes).
+
+#### Life expectancy at birth – Numerical - Discrete
+Life expectancy at birth compares the average number of years to be lived by a group of people born in the same year, if mortality at each age remains constant in the future. Life expectancy at birth is also a measure of overall quality of life in a country and summarizes the mortality at all ages.
+
+#### Internet users – Numerical - Discrete
+Internet users compares the number of users within a country that access the Internet. Statistics vary from country to country and may include users who access the Internet at least several times a week to those who access it only once within a period of several months.
+
+> *Note: We also used the “countrycode” package in R to add the categorical variable of continent to our data.*
+
 
 
 ```{r,echo=FALSE,warning=FALSE}
