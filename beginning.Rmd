@@ -196,7 +196,7 @@ ggplot(data=perm_slope, aes(x=stat)) +
 
 ```
 
-<<<<<<< HEAD
+
 ```{r}
 lm_res <- resid(lm_mod)
 lm_res <- data.frame(resid = lm_res)
@@ -211,9 +211,9 @@ scatter + geom_point(size = 1.5) +
   geom_hline(yintercept=0, linetype='dashed', col = 'red') +
   ggtitle("Internet Usage Proportion vs Residuals")
 ```
-=======
+
 The observed slope is nowhere near our slopes obtained by permuting the data.   we are certain that we can reject the null hypothesis.
->>>>>>> finalchanges
+
 
 ```{r}
 set.seed(34209)
