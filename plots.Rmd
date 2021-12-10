@@ -26,13 +26,13 @@ cia <- na.omit(cia) #OMIT ALL ROWS WITH ANY NA VALUES
 ```
 
 
-### Figure 1
+
 
 ```{r,echo=FALSE,warning=FALSE}
 plot1 <- ggplot(data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
 ```
 
-### Figure 2
+
 
 ```{r,echo=FALSE,warning=FALSE}
 plot2 <- ggplot (data=cia, aes(x=internet_usage_proportion)) + 
@@ -43,7 +43,7 @@ plot2 <- ggplot (data=cia, aes(x=internet_usage_proportion)) +
 
 ```
 
-### Figure 3
+
 
 ```{r,echo=FALSE,warning=FALSE}
 plot3 <- ggplot (data=cia, aes(x=life_exp_at_birth)) + 
@@ -53,18 +53,18 @@ plot3 <- ggplot (data=cia, aes(x=life_exp_at_birth)) +
   ylab("Count") + ggtitle('Figure 3')
 ```
 
-### Figure 4
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
 obs_slope <- lm_mod$coefficients[2]
 summary(lm_mod)
 plot4 <- lm_mod
 ```
 
-### Figure 5
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 
 set.seed(1009)
 perm_slope <- cia %>%
@@ -81,9 +81,9 @@ plot5 <- ggplot(data=perm_slope, aes(x=stat)) +
 
 ```
 
-### Figure 6
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 lm_res <- resid(lm_mod)
 lm_res <- data.frame(resid = lm_res)
 lm_res <- lm_res %>% mutate(internet_usage_proportion = cia$internet_usage_proportion)
@@ -94,17 +94,17 @@ plot6 <- ggplot(data=lm_res, aes(x=resid))+
   ggtitle("Figure 6: Histogram of Residuals")
 ```
 
-### Figure 7
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 plot7 <- ggplot(data=lm_res, aes(x = internet_usage_proportion, y =resid)) + geom_point(size = 1.5) + 
   xlab("Internet Usage Proportion") +  ylab("Residual")  +
   geom_hline(yintercept=0, linetype='dashed', col = 'red') +
   ggtitle("Figure 7: Internet Usage Proportion vs Residuals")
 ```
 
-### Figure 8
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 set.seed(34209)
 perm_ci <- cia %>% 
   specify(life_exp_at_birth ~ internet_usage_proportion) %>%  
@@ -113,9 +113,9 @@ perm_ci <- cia %>%
 plot8 <- visualize(perm_ci)
 ```
 
-### Figure 9
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 alpha <- .05
 
 #lower percentile cutoff
@@ -129,9 +129,9 @@ quantile(perm_ci$stat,c(p_lower,p_upper))
 
 ```
 
-### Figure 10
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 noafrica <- cia %>% 
   filter(continent != "Africa")
 
@@ -144,9 +144,9 @@ plot10 <- ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_
 
 ```
 
-### Figure 11
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 lm_mod_noafrica <- lm(life_exp_at_birth ~ internet_usage_proportion, data=noafrica)
 obs_slope_noafrica <- lm_mod_noafrica$coefficients[2]
 obs_slope_noafrica
@@ -155,9 +155,9 @@ summary(lm_mod_noafrica)
 plot11 <- lm_mod_noafrica
 ```
 
-### Figure 12
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 set.seed(1010)
 perm_slope_noafrica <- noafrica %>%
    specify(life_exp_at_birth ~ internet_usage_proportion) %>%
@@ -173,9 +173,9 @@ plot12 <- ggplot(data=perm_slope_noafrica, aes(x=stat)) +
   xlim(-20,20)
 ```
 
-### Figure 13
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 set.seed(34210)
 perm_ci_noafrica <- noafrica %>% 
   specify(life_exp_at_birth ~ internet_usage_proportion) %>%  
@@ -184,9 +184,9 @@ perm_ci_noafrica <- noafrica %>%
 plot13 <- visualize(perm_ci_noafrica)
 ```
 
-### Figure 14
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 alpha <- .05
 
 #lower percentile cutoff
@@ -200,9 +200,9 @@ quantile(perm_ci_noafrica$stat,c(p_lower,p_upper))
 
 ```
 
-### Figure 15
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 lm_res_noafrica <- resid(lm_mod_noafrica)
 lm_res_noafrica <- data.frame(resid = lm_res_noafrica)
 lm_res_noafrica <- lm_res_noafrica %>% mutate(internet_usage_proportion = noafrica$internet_usage_proportion)
@@ -210,9 +210,9 @@ plot15 <- ggplot(data=lm_res_noafrica, aes(x=resid)) + geom_histogram(binwidth=1
   xlab("Residuals") +  ylab("Frequency") + ggtitle("Figure 15: Histogram of Residuals with Africa Excluded")
 ```
 
-### Figure 16
 
-```{r}
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
 plot16 <- ggplot(data=lm_res_noafrica, aes(x = internet_usage_proportion, y =resid)) + geom_point(size = 1.5) + 
   xlab("Internet Usage Proportion") +  ylab("Residual")  +
   geom_hline(yintercept=0, linetype='dashed', col = 'red') +
@@ -220,15 +220,16 @@ plot16 <- ggplot(data=lm_res_noafrica, aes(x = internet_usage_proportion, y =res
 ```
 
 
-```{r}
-plot2
-plot3
-grid.arrange(plot1, plot10, ncol=2)
-grid.arrange(plot6, plot15, ncol=2)
-grid.arrange(plot7, plot16, ncol=2)
+```{r,echo=FALSE,warning=FALSE}
+plot2 + ggtitle("Figure 1")
+plot3 + ggtitle("Figure 2")
+grid.arrange(plot1 + ggtitle("Figure 3"), plot10 + ggtitle("Figure 4"), ncol=2)
+grid.arrange(plot6 + ggtitle("Figure 5"), plot15 + ggtitle("Figure 6"), ncol=2)
+grid.arrange(plot7 + ggtitle("Figure 7"), plot16 + ggtitle("Figure 8"), ncol=2)
 plot4
-grid.arrange(plot5, plot12, ncol=2)
-grid.arrange(plot8, plot13, ncol=2)
+plot11
+grid.arrange(plot5 + ggtitle("Figure 11"), plot12 + ggtitle("Figure 12"), ncol=2)
+grid.arrange(plot8 + ggtitle("Figure 13"), plot13 + ggtitle("Figure 14"), ncol=2)
 
 ```
 
