@@ -29,7 +29,12 @@ cia <- na.omit(cia) #OMIT ALL ROWS WITH ANY NA VALUES
 
 
 ```{r,echo=FALSE,warning=FALSE}
-plot1 <- ggplot(data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + geom_point(aes(color = continent,size=density)) + xlab('Internet users / population') + ylab('Life Expentancy at birth') + ggtitle('Figure 1')
+plot1 <- ggplot(data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth)) + 
+  geom_point(aes(color = continent,size=density)) + 
+  geom_abline(aes(slope = coef(lm_mod)[[2]], intercept = coef(lm_mod)[[1]], fill='Best Fit Linear Model'), size=1) +
+  xlab('Internet users / population') + 
+  ylab('Life Expentancy at birth') + 
+  ggtitle('Figure 1')
 ```
 
 
@@ -37,10 +42,8 @@ plot1 <- ggplot(data=cia, aes(x=internet_usage_proportion, y=life_exp_at_birth))
 ```{r,echo=FALSE,warning=FALSE}
 plot2 <- ggplot (data=cia, aes(x=internet_usage_proportion)) + 
   geom_histogram(bins = 12, aes(fill = continent)) + 
-  geom_vline(xintercept = median(cia$internet_usage_proportion), col=rgb(.2,.6,.9)) + 
   xlab("Internet Usage Proportion") + 
   ylab("Count")  + ggtitle('Figure 2')
-
 ```
 
 
@@ -48,7 +51,6 @@ plot2 <- ggplot (data=cia, aes(x=internet_usage_proportion)) +
 ```{r,echo=FALSE,warning=FALSE}
 plot3 <- ggplot (data=cia, aes(x=life_exp_at_birth)) + 
   geom_histogram(bins = 12, aes(color = death_rate, fill=continent)) +
-  geom_vline(xintercept = median(cia$life_exp_at_birth), col=rgb(.2,.6,.9)) + 
   xlab("Life Expectancy at Birth - years") + 
   ylab("Count") + ggtitle('Figure 3')
 ```
@@ -137,11 +139,10 @@ noafrica <- cia %>%
 
 plot10 <- ggplot (data=noafrica, aes(x=internet_usage_proportion, y=life_exp_at_birth)) +
   geom_point(aes(color = continent,size=density)) + 
+  geom_abline(aes(slope = coef(lm_mod_noafrica)[[2]], intercept = coef(lm_mod_noafrica)[[1]], fill='Best Fit Linear Model'), size=1) +
   xlab('Internet users / population') + 
   ylab('Life Expentancy at birth') + 
   ggtitle('Figure 10:  Africa Excluded')
-
-
 ```
 
 
@@ -222,20 +223,69 @@ plot16 <- ggplot(data=lm_res_noafrica, aes(x = internet_usage_proportion, y =res
 
 ```{r,echo=FALSE,warning=FALSE}
 plot2 + ggtitle("Figure 1")
+```
+
+\newpage
+
+```{r,echo=FALSE,warning=FALSE}
 plot3 + ggtitle("Figure 2")
+```
+
+\newpage
+
+```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot1 + ggtitle("Figure 3"), plot10 + ggtitle("Figure 4"), ncol=2)
+```
+
+\newpage
+
+```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot6 + ggtitle("Figure 5"), plot15 + ggtitle("Figure 6"), ncol=2)
+```
+
+\newpage
+
+```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot7 + ggtitle("Figure 7"), plot16 + ggtitle("Figure 8"), ncol=2)
+```
+
+\newpage
+
+## Figure 9
+
+```{r,echo=FALSE,warning=FALSE}
 plot4
+```
+
+## Figure 10
+
+```{r,echo=FALSE,warning=FALSE}
 plot11
+```
+
+\newpage
+
+```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot5 + ggtitle("Figure 11"), plot12 + ggtitle("Figure 12"), ncol=2)
+```
+
+\newpage
+
+```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot8 + ggtitle("Figure 13"), plot13 + ggtitle("Figure 14"), ncol=2)
 ```
 
 \newpage
-### Confidence intervals
+
+## Figure 15
+
 ```{r,echo=FALSE,warning=FALSE}
 ci_africa
+```
+
+## Figure 16
+
+```{r,echo=FALSE,warning=FALSE}
 ci_noafrica
 ```
 
