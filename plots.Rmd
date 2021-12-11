@@ -360,20 +360,11 @@ Figure 4: After excluding Africa, a more linear correlation can be observed betw
 \newpage
 
 
-## Figure 9
+## Figure 5
 
 ```{r,echo=FALSE,warning=FALSE}
 plot4
 ```
-
-
-
-## Figure 10
-
-```{r,echo=FALSE,warning=FALSE}
-plot11
-```
-
 
 
 Figure 5: Our linear model tells us that for each 10% increase in the proportion of internet users, we can expect a 2.346 year increase in life expectancy. Our y-intercept within this model represents the life expectancy we should expect from a country with 0% internet usage, which here is estimated to be 63.71 years. $R^2$ within this model is 0.5291, which shows a minor correlation.
@@ -383,6 +374,13 @@ Our linear model including African countries is as follows:
 $y_{lifeexpectancyatbirth} = B_0 + B_1* x_{internetusership}$
 
 $B_0 = 63.71$ $B_1 = 23.46$
+
+## Figure 6
+
+```{r,echo=FALSE,warning=FALSE}
+plot11
+```
+
 
 Figure 6: Our linear model when excluding Africa tells us that for each 10% increase in the proportion of internet users, we can expect a 1.353 year increase in life expectancy. Our y-intercept within this model represents the life expectancy we should expect from a non-African country with 0% internet usage, which here is estimated to be 69.52 years. $R^2$ within this model is 0.4999, which shows a minor correlation surprisingly lower than our global model.
 
@@ -395,25 +393,23 @@ $B_0 = 69.52$ $B_1 = 13.53$
 \newpage
 
 ```{r,echo=FALSE,warning=FALSE}
-grid.arrange(plot6 + ggtitle("Figure 5"), plot15 + ggtitle("Figure 6"), ncol=2)
-```
-
-Figure 9: This is a plot of residuals of the linear model with Africa included. If this was a good set of data to apply a linear model to, we would expect the points to be distributed normally around the 0 line. What we see in this scatterplot is clear heteroscedasticity and bias, indicating that this is not a good fit for a linear model although it yields a higher $R^2$ value.
-
-Figure 10: When we exclude Africa, we can see that our residuals lie within a consistent constrained range around our linear model. There is no obvious bias, and only a minimal noticeable amount of heteroscedasticity. This shows that our linear model is at the very least following a broader trend among our data points and that our slope is accurate.
-
-\newpage
-
-```{r,echo=FALSE,warning=FALSE}
-grid.arrange(plot7 + ggtitle("Figure 7"), plot16 + ggtitle("Figure 8"), ncol=2)
+grid.arrange(plot6 + ggtitle("Figure 7"), plot15 + ggtitle("Figure 8"), ncol=2)
 ```
 
 Figure 7: We can see that our linear model, in trying to accommodate both the trend among African countries and the trend among non-African countries, is divided (not as clearly unimodal) and shows an abnormal distribution of residuals. Since we are assuming normality for our simple linear model, we would expect this histogram to reflect a normal distribution, which it does not.
 
 Figure 8: In excluding Africa, we see that our new linear model shows a more normal distribution of residuals, and so our linear model can more accurately describe the trend of our distribution.
 
+
 \newpage
 
+```{r,echo=FALSE,warning=FALSE}
+grid.arrange(plot7 + ggtitle("Figure 9"), plot16 + ggtitle("Figure 10"), ncol=2)
+```
+
+Figure 9: This is a plot of residuals of the linear model with Africa included. If this was a good set of data to apply a linear model to, we would expect the points to be distributed normally around the 0 line. What we see in this scatterplot is clear heteroscedasticity and bias, indicating that this is not a good fit for a linear model although it yields a higher $R^2$ value.
+
+Figure 10: When we exclude Africa, we can see that our residuals lie within a consistent constrained range around our linear model. There is no obvious bias, and only a minimal noticeable amount of heteroscedasticity. This shows that our linear model is at the very least following a broader trend among our data points and that our slope is accurate.
 
 \newpage
 
