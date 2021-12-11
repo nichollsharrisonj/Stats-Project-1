@@ -240,6 +240,17 @@ $H_0: B_1 = 0$
 
 $H_A: B_1 \ne 0$
 
+Linear model with Africa:
+
+$y_{lifeexpectancyatbirth}  = B_0 + B_1 * x_{internetusership}$
+
+$B_0 = 63.71$ $B_1 = 23.46$
+
+Linear model without Africa: 
+
+$y_{lifeexpectancyatbirthwithoutAfrica} = B_0 + B_1 * x_{internetusership}$
+
+$B_0 = 69.52$ $B_1 = 13.53$
 
 ## Approach, Declaration of Goals:
 
@@ -297,23 +308,35 @@ Life expectancy at birth compares the average number of years to be lived by a g
 #### Internet users – Numerical - Discrete
 Internet users compares the number of users within a country that access the Internet. Statistics vary from country to country and may include users who access the Internet at least several times a week to those who access it only once within a period of several months.
 
-> *Note: We also used the “countrycode” package in R to add the categorical variable of continent to our data.*
+#### Continent – Categorical - Nominal 
+Continents as corresponds to each Country recognized by the CIA.
+
+#### Density – Numerical - Continuous 
+Density as the average population per square kilometer of the country. This is based on the Population and the Area data points by the CIA Factbook.
+
+#### Internet Usage Proportion – Numerical - Continuous 
+Internet Usage as the number of users within a country that access the internet. This is based on the Internet Users and the Population data points by the CIA Factbook.
+
+
+> *Note: We used the “countrycode” package in R to add the categorical variable of continent to our data.*
 
 ## Methods
 
-In performing an observational study, we are limited in the viability of performing randomization tests on our data. We can find correlations in our plots using Rˆ2 and find the differences in means between different categorical groups, in our case Continents seems apt for a geopolitical analysis of the data. However, given that our sample population is itself the true population of all countries, there are no methods by which we can fabricate more samples via bootstrapping.
+To begin, two new columns were created in the dataframe: internet usage proportion, and continents. Internet usage proportion was calculated by dividing the total internet users in a country by its population, and would be a more effective tool in comparing countries of vastly different populations. The continents column made use of the “countrycode” package in order to further distinguish the data in the CIA Factbook geographically.
 
-We noticed that when graphing life expectancy against internet usage while coloring the points by continent, almost the entire lower section of outliers was comprised of countries in Africa. We therefore theorized that internet usage only begins to correlate linearly with life expectancy at some threshold value (~65 years), which hardly any African countries meet. Based on this, we decided to see how the data would look with Africa excluded. Figures 7 and 8 reflect the results of this exploration.
+A basic scatter plot of life expectancy versus internet usage proportion was created to get a preliminary idea of the relationship. At this point it was noticed that, when graphing life expectancy against internet usage while coloring the points by continent, almost the entire lower section of outliers was comprised of countries in Africa. It was therefore theorized that internet usage only begins to correlate linearly with life expectancy at some threshold value (~65 years), which few African countries meet. Based on this, it was decided to see how the data would look with Africa excluded from the initial scatterplot.
 
-Figure Six, Figure Seven, and Figure Eight: Here we have generated linear models based on Figure 1, and computed Rˆ2 of each linear model within the graphs. The greatest Rˆ2 value, and thereby the best-fit linear model, is calculated to be that of Figure Six, the graph which includes all countries, rather than Figure Seven or Figure Eight which exclude countries in the continent of Africa.
+From here, parallel operations were performed on the data set including Africa and the data set excluding Africa. Linear models were made for both and their R^2 values taken into account. As R^2 produced unexpected results (excluding Africa yielded a lower R^2, although it looked more linear), a histogram and scatter plot of the respective model’s residuals were created to test the normalcy of their variation.
 
-To further explore our findings, we plan to make plots of the residuals and include lines of best fit. The residuals will give us insight into the biases in our scatterplots, and allow us to determine how appropriate linear models are for comparing internet usage and life expectancy. Although excluding Africa yields a worse Rˆ2 value, it may be that the residuals form a distribution closer to normal, meaning that it is more suited to a linear model than the alternative.
+Given the hypothesis, a randomization test was performed to determine whether the slopes of the linear models were statistically significant. A bootstrap distribution of slopes was performed for both sets of data (those including and excluding Africa), and the quantile method was employed to calculate a confidence interval. 
 
-
+\newpage
 
 ```{r,echo=FALSE,warning=FALSE}
 plot2 + ggtitle("Figure 1")
 ```
+
+Figure 1: Most countries in Africa have an internet usage proportion less than a quarter. Asia has a leftward skew while Europe has a rightward skew. The Americas and Oceania are more evenly and sporadically distributed across the histogram. When ignoring Africa, the graph follows a very shallow negative slope, but when including Africa the slope is much steeper. 
 
 \newpage
 
@@ -321,17 +344,37 @@ plot2 + ggtitle("Figure 1")
 plot3 + ggtitle("Figure 2")
 ```
 
+Figure 2: Africa takes most of the lower end of our life expectancy histogram, while the Americas, Asia, Europe, and Oceania carry similar ranges, with Asia as the lower of the bunch and Europe as the upper of the four. Life expectancy seems to have an upper skew across all countries, with the highest frequency occurring around the 75-76 range.
+
 \newpage
 
 ```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot1 + ggtitle("Figure 3"), plot10 + ggtitle("Figure 4"), ncol=2)
 ```
 
+
+Figure 3: The proportion of internet users in the population of a given country correlates positively with life expectancy at birth. As indicated by the color —grouped by continent — these trends are not evenly dispersed across the nations of the world. Africa is clustered largely around the bottom left, with lower internet usership and life expectancy, while Europe is largely clustered in the top right, with higher internet usership and life expectancy. Oceania, Asia and the Americas are distributed across the plot.
+
+Figure 4: After excluding Africa, a more linear correlation can be observed between life expectancy at birth and internet usage. There are significantly fewer outliers present than there were in the graph including Africa. 
+
 \newpage
 
 ```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot6 + ggtitle("Figure 5"), plot15 + ggtitle("Figure 6"), ncol=2)
 ```
+
+Figure 5: Our linear model tells us that for each 10% increase in the proportion of internet users, we can expect a 2.346 year increase in life expectancy. Our y-intercept within this model represents the life expectancy we should expect from a country with 0% internet usage, which here is estimated to be 63.71 years. $R^2$ within this model is 0.5291, which shows a minor correlation.
+
+Our linear model including African countries is as follows:
+
+$y_{lifeexpectancyatbirth} = B_0 + B_1* x_{internetusership}$
+
+$B_0 = 63.71$ $B_1 = 23.46$
+
+Figure 6: Our linear model when excluding Africa tells us that for each 10% increase in the proportion of internet users, we can expect a 1.353 year increase in life expectancy. Our y-intercept within this model represents the life expectancy we should expect from a non-African country with 0% internet usage, which here is estimated to be 69.52 years. R^2 within this model is 0.4999, which shows a minor correlation surprisingly lower than our global model.
+Our linear model excluding African countries is as follows:
+y_lifeexpectancyatbirthwithoutAfrica = B_0 + B_1x_internetusership
+B_0 = 69.52 B_1 = 13.53
 
 \newpage
 
