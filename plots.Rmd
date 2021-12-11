@@ -259,11 +259,11 @@ There is potentially a correlation between the variables. The average life expec
 Through our analysis, our goals are to observe how internet usage and life expectancy affect each other in different nations. Further exploration of this correlation, specifically in countries in Asia, is provided in the first background research article listed. Both background research articles provide insight about other factors that could be influencing or are influenced by the variables we chose to focus on. Economic development appears to have an important connection to technological advancements, which impacts internet accessibility and further, internet usage.
 Additional research related to this subject may be found below.
 
-Lee, Cheng-Wen, The Relationship between Internet Environment and Life Expectancy in Asia
+*Lee, Cheng-Wen, The Relationship between Internet Environment and Life Expectancy in Asia*
 
 Article explores this question specifically in Asia, with relevant take-away in emphasising the disparity between countries with advanced telecommunication services and those without in regards to their general economic development in a globalized market.
 
-Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, Examining the Relationship between the Internet and Life Expectancy
+*Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, Examining the Relationship between the Internet and Life Expectancy*
 
 Article explores this question Globally, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
 
@@ -371,16 +371,23 @@ $y_{lifeexpectancyatbirth} = B_0 + B_1* x_{internetusership}$
 
 $B_0 = 63.71$ $B_1 = 23.46$
 
-Figure 6: Our linear model when excluding Africa tells us that for each 10% increase in the proportion of internet users, we can expect a 1.353 year increase in life expectancy. Our y-intercept within this model represents the life expectancy we should expect from a non-African country with 0% internet usage, which here is estimated to be 69.52 years. R^2 within this model is 0.4999, which shows a minor correlation surprisingly lower than our global model.
+Figure 6: Our linear model when excluding Africa tells us that for each 10% increase in the proportion of internet users, we can expect a 1.353 year increase in life expectancy. Our y-intercept within this model represents the life expectancy we should expect from a non-African country with 0% internet usage, which here is estimated to be 69.52 years. $R^2$ within this model is 0.4999, which shows a minor correlation surprisingly lower than our global model.
+
 Our linear model excluding African countries is as follows:
-y_lifeexpectancyatbirthwithoutAfrica = B_0 + B_1x_internetusership
-B_0 = 69.52 B_1 = 13.53
+
+$y_{lifeexpectancyatbirthwithoutAfrica} = B_0 + B_1 * x_{internetusership}$
+
+$B_0 = 69.52$ $B_1 = 13.53$
 
 \newpage
 
 ```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot7 + ggtitle("Figure 7"), plot16 + ggtitle("Figure 8"), ncol=2)
 ```
+
+Figure 7: We can see that our linear model, in trying to accommodate both the trend among African countries and the trend among non-African countries, is divided (not as clearly unimodal) and shows an abnormal distribution of residuals. Since we are assuming normality for our simple linear model, we would expect this histogram to reflect a normal distribution, which it does not.
+
+Figure 8: In excluding Africa, we see that our new linear model shows a more normal distribution of residuals, and so our linear model can more accurately describe the trend of our distribution.
 
 \newpage
 
@@ -390,11 +397,15 @@ grid.arrange(plot7 + ggtitle("Figure 7"), plot16 + ggtitle("Figure 8"), ncol=2)
 plot4
 ```
 
+Figure 9: This is a plot of residuals of the linear model with Africa included. If this was a good set of data to apply a linear model to, we would expect the points to be distributed normally around the 0 line. What we see in this scatterplot is clear heteroscedasticity and bias, indicating that this is not a good fit for a linear model although it yields a higher R^2 value.
+
 ## Figure 10
 
 ```{r,echo=FALSE,warning=FALSE}
 plot11
 ```
+
+Figure 10: When we exclude Africa, we can see that our residuals lie within a consistent constrained range around our linear model. There is no obvious bias, and only a minimal noticeable amount of heteroscedasticity. This shows that our linear model is at the very least following a broader trend among our data points and that our slope is accurate.
 
 \newpage
 
@@ -402,11 +413,19 @@ plot11
 grid.arrange(plot5 + ggtitle("Figure 11"), plot12 + ggtitle("Figure 12"), ncol=2)
 ```
 
+Figure 11: This is a histogram of slopes obtained from permuting the country data 1000 times and applying a linear model to each permutation. Of the simulated slopes, none approach the actual slope of the plot of the nations of the world. Accordingly, we are confident that we may reject the null hypothesis (B_1 = 0). 
+
+Figure 12: The exclusion of Africa does not change the fact that no simulated slopes approach the true slope of all non-African nations. Therefore, we can also reject the null hypothesis in the Africa excluded case. 
+
 \newpage
 
 ```{r,echo=FALSE,warning=FALSE}
 grid.arrange(plot8 + ggtitle("Figure 13"), plot13 + ggtitle("Figure 14"), ncol=2)
 ```
+
+Figure 13: This histogram of slopes is obtained from bootstrapping our data and fitting slopes to the bootstrapped samples. It is centered around ~23, our observed slope with Africa included.
+
+Figure 14: This histogram of slopes is obtained from bootstrapping our data and fitting slopes to the bootstrapped samples. It is centered around ~13, our observed slope with Africa excluded.
 
 \newpage
 
@@ -416,9 +435,28 @@ grid.arrange(plot8 + ggtitle("Figure 13"), plot13 + ggtitle("Figure 14"), ncol=2
 ci_africa
 ```
 
+Figure 15: We are 95% confident that the slope of life expectancy at birth vs internet usership is between 20.392 and 26.506.
+
 ## Figure 16
 
 ```{r,echo=FALSE,warning=FALSE}
 ci_noafrica
 ```
 
+Figure 16: We are 95% confident that the slope of life expectancy at birth vs internet usership in nations excluding those of Africa is between 11.102 and 15.859.
+
+> Note: In all of our scatterplots, the dots representing countries have size indicating their population density. We used this technique to explore multiple aspects of each country’s data, and it doesn’t have a direct bearing on our analysis.
+
+\newpage
+
+## Conclusions
+
+We observed a positive correlation between internet usership in a given country, and life expectancy at birth. While this relationship varies across the nations and continents of the world – with much of Africa serving as a noted exception – we are 95% confident that the true slope of this data set is between ​​20.392 and 26.506. This is sufficient evidence to reject the null hypothesis. Our analysis of the residuals, however, tells us that this relationship might be trying to accommodate a non-linear relationship, or possibly two separate linear relationships. Exploring the second possibility, at the same confidence interval this window is lowered to between 11.103 and 15.858. This is still sufficient to reject the null hypothesis, and our residual analysis shows a significantly more normal distribution than before. This points to the linear model fitting the non-African relationship more comfortably than the global relationship between life expectancy at birth and proportion of internet users.
+
+
+Possible shortcomings include the employment of the linear model, which was not perfectly suited to the data, at least not when applied to all nations of the world. A linear model may, however, be applied to non-African nations, with our residual analysis explaining their applicability. Simply excluding Africa from our analysis yielded fruitful results, but our analysis falls short of telling us what is unique about Africa in this respect. Further research into this topic would benefit from more advanced models, more research from the social sciences explaining external influences, or access to other variables like level of economic development, geography, or urbanization. Understanding the differences belying the African and non-African divide could point us to whether life expectancy or internet usage is the true explanatory variable.
+
+## References
+
+1. Lee, C.-W., & Kim, M.-S. (2018). The Relationship between Internet Environment and Life Expectancy in Asia. Review of Integrative Business and Economics Research, 8(2), 70–80. 
+2. Alzaid, A., Alsulami, M., Komal, K., & Al-Maraghi, A. (n.d.). 24th IBIMA Conference. In Examining the Relationship between the Internet and Life Expectancy (pp. 1–10). Milan. 
