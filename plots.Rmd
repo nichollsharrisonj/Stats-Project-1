@@ -240,17 +240,6 @@ $H_0: B_1 = 0$
 
 $H_A: B_1 \ne 0$
 
-Linear model with Africa:
-
-$y_{lifeexpectancyatbirth}  = B_0 + B_1 * x_{internetusership}$
-
-$B_0 = 63.71$ $B_1 = 23.46$
-
-Linear model without Africa: 
-
-$y_{lifeexpectancyatbirthwithoutAfrica} = B_0 + B_1 * x_{internetusership}$
-
-$B_0 = 69.52$ $B_1 = 13.53$
 
 ### Approach, Declaration of Goals:
 
@@ -265,7 +254,7 @@ Article explores this question specifically in Asia, with relevant take-away in 
 
 *Alzaid, Ahmed, Musleh Alsulami, Komal Komal, Adel-Maraghi, Examining the Relationship between the Internet and Life Expectancy*
 
-Article explores this question Globally, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
+Article explores this question globally, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
 
 \newpage
 
@@ -462,8 +451,23 @@ Figure 16: We are 95% confident that the slope of life expectancy at birth vs in
 
 ## Conclusions
 
-We observed a positive correlation between internet usership in a given country, and life expectancy at birth. While this relationship varies across the nations and continents of the world – with much of Africa serving as a noted exception – we are 95% confident that the true slope of this data set is between ​​20.392 and 26.506. This is sufficient evidence to reject the null hypothesis. Our analysis of the residuals, however, tells us that this relationship might be trying to accommodate a non-linear relationship, or possibly two separate linear relationships. Exploring the second possibility, at the same confidence interval this window is lowered to between 11.103 and 15.858. This is still sufficient to reject the null hypothesis, and our residual analysis shows a significantly more normal distribution than before. This points to the linear model fitting the non-African relationship more comfortably than the global relationship between life expectancy at birth and proportion of internet users.
+$H_0: B_1 = 0$
 
+$H_A: B_1 \ne 0$
+
+Linear model with Africa:
+
+$y_{lifeexpectancyatbirth}  = B_0 + B_1 * x_{internetusership}$
+
+$B_0 = 63.71$ $B_1 = 23.46$
+
+Linear model without Africa: 
+
+$y_{lifeexpectancyatbirthwithoutAfrica} = B_0 + B_1 * x_{internetusership}$
+
+$B_0 = 69.52$ $B_1 = 13.53$
+
+We observed a positive correlation between internet usership in a given country, and life expectancy at birth. While this relationship varies across the nations and continents of the world – with much of Africa serving as a noted exception – we are 95% confident that the true slope of this data set is between ​​20.392 and 26.506. This is sufficient evidence to reject the null hypothesis. Our analysis of the residuals, however, tells us that this model might be trying to accommodate a non-linear relationship, or possibly two separate linear relationships. Exploring the second possibility, at the same confidence interval for non-African countries, this window is lowered to between 11.103 and 15.858. This is still sufficient to reject the null hypothesis, and our residual analysis shows a significantly more normal distribution than before. This points to the linear model fitting the non-African relationship more comfortably than the global relationship between life expectancy at birth and proportion of internet users.
 
 Possible shortcomings include the employment of the linear model, which was not perfectly suited to the data, at least not when applied to all nations of the world. A linear model may, however, be applied to non-African nations, with our residual analysis explaining their applicability. Simply excluding Africa from our analysis yielded fruitful results, but our analysis falls short of telling us what is unique about Africa in this respect. Further research into this topic would benefit from more advanced models, more research from the social sciences explaining external influences, or access to other variables like level of economic development, geography, or urbanization. Understanding the differences belying the African and non-African divide could point us to whether life expectancy or internet usage is the true explanatory variable.
 
