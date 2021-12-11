@@ -61,7 +61,7 @@ plot3 <- ggplot (data=cia, aes(x=life_exp_at_birth)) +
 lm_mod <- lm(life_exp_at_birth ~ internet_usage_proportion, data = cia)
 obs_slope <- lm_mod$coefficients[2]
 summary(lm_mod)
-plot4 <- lm_mod
+plot4 <- summary(lm_mod)
 ```
 
 
@@ -153,7 +153,7 @@ obs_slope_noafrica <- lm_mod_noafrica$coefficients[2]
 obs_slope_noafrica
 summary(lm_mod_noafrica)
 
-plot11 <- lm_mod_noafrica
+plot11 <- summary(lm_mod_noafrica)
 ```
 
 
@@ -298,6 +298,16 @@ Life expectancy at birth compares the average number of years to be lived by a g
 Internet users compares the number of users within a country that access the Internet. Statistics vary from country to country and may include users who access the Internet at least several times a week to those who access it only once within a period of several months.
 
 > *Note: We also used the “countrycode” package in R to add the categorical variable of continent to our data.*
+
+## Methods
+
+In performing an observational study, we are limited in the viability of performing randomization tests on our data. We can find correlations in our plots using Rˆ2 and find the differences in means between different categorical groups, in our case Continents seems apt for a geopolitical analysis of the data. However, given that our sample population is itself the true population of all countries, there are no methods by which we can fabricate more samples via bootstrapping.
+
+We noticed that when graphing life expectancy against internet usage while coloring the points by continent, almost the entire lower section of outliers was comprised of countries in Africa. We therefore theorized that internet usage only begins to correlate linearly with life expectancy at some threshold value (~65 years), which hardly any African countries meet. Based on this, we decided to see how the data would look with Africa excluded. Figures 7 and 8 reflect the results of this exploration.
+
+Figure Six, Figure Seven, and Figure Eight: Here we have generated linear models based on Figure 1, and computed Rˆ2 of each linear model within the graphs. The greatest Rˆ2 value, and thereby the best-fit linear model, is calculated to be that of Figure Six, the graph which includes all countries, rather than Figure Seven or Figure Eight which exclude countries in the continent of Africa.
+
+To further explore our findings, we plan to make plots of the residuals and include lines of best fit. The residuals will give us insight into the biases in our scatterplots, and allow us to determine how appropriate linear models are for comparing internet usage and life expectancy. Although excluding Africa yields a worse Rˆ2 value, it may be that the residuals form a distribution closer to normal, meaning that it is more suited to a linear model than the alternative.
 
 
 
