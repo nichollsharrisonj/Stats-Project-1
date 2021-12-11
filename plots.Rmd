@@ -252,7 +252,7 @@ $y_{lifeexpectancyatbirthwithoutAfrica} = B_0 + B_1 * x_{internetusership}$
 
 $B_0 = 69.52$ $B_1 = 13.53$
 
-## Approach, Declaration of Goals:
+### Approach, Declaration of Goals:
 
 There is potentially a correlation between the variables. The average life expectancy in a country could influence internet usage and/or internet usage in a country could influence the average life expectancy.
 
@@ -326,7 +326,7 @@ To begin, two new columns were created in the dataframe: internet usage proporti
 
 A basic scatter plot of life expectancy versus internet usage proportion was created to get a preliminary idea of the relationship. At this point it was noticed that, when graphing life expectancy against internet usage while coloring the points by continent, almost the entire lower section of outliers was comprised of countries in Africa. It was therefore theorized that internet usage only begins to correlate linearly with life expectancy at some threshold value (~65 years), which few African countries meet. Based on this, it was decided to see how the data would look with Africa excluded from the initial scatterplot.
 
-From here, parallel operations were performed on the data set including Africa and the data set excluding Africa. Linear models were made for both and their R^2 values taken into account. As R^2 produced unexpected results (excluding Africa yielded a lower R^2, although it looked more linear), a histogram and scatter plot of the respective model’s residuals were created to test the normalcy of their variation.
+From here, parallel operations were performed on the data set including Africa and the data set excluding Africa. Linear models were made for both and their $R^2$ values taken into account. As $R^2$ produced unexpected results (excluding Africa yielded a lower $R^2$, although it looked more linear), a histogram and scatter plot of the respective model’s residuals were created to test the normalcy of their variation.
 
 Given the hypothesis, a randomization test was performed to determine whether the slopes of the linear models were statistically significant. A bootstrap distribution of slopes was performed for both sets of data (those including and excluding Africa), and the quantile method was employed to calculate a confidence interval. 
 
@@ -397,7 +397,7 @@ Figure 8: In excluding Africa, we see that our new linear model shows a more nor
 plot4
 ```
 
-Figure 9: This is a plot of residuals of the linear model with Africa included. If this was a good set of data to apply a linear model to, we would expect the points to be distributed normally around the 0 line. What we see in this scatterplot is clear heteroscedasticity and bias, indicating that this is not a good fit for a linear model although it yields a higher R^2 value.
+Figure 9: This is a plot of residuals of the linear model with Africa included. If this was a good set of data to apply a linear model to, we would expect the points to be distributed normally around the 0 line. What we see in this scatterplot is clear heteroscedasticity and bias, indicating that this is not a good fit for a linear model although it yields a higher $R^2$ value.
 
 ## Figure 10
 
@@ -413,7 +413,7 @@ Figure 10: When we exclude Africa, we can see that our residuals lie within a co
 grid.arrange(plot5 + ggtitle("Figure 11"), plot12 + ggtitle("Figure 12"), ncol=2)
 ```
 
-Figure 11: This is a histogram of slopes obtained from permuting the country data 1000 times and applying a linear model to each permutation. Of the simulated slopes, none approach the actual slope of the plot of the nations of the world. Accordingly, we are confident that we may reject the null hypothesis (B_1 = 0). 
+Figure 11: This is a histogram of slopes obtained from permuting the country data 1000 times and applying a linear model to each permutation. Of the simulated slopes, none approach the actual slope of the plot of the nations of the world. Accordingly, we are confident that we may reject the null hypothesis ($B_1$ = 0). 
 
 Figure 12: The exclusion of Africa does not change the fact that no simulated slopes approach the true slope of all non-African nations. Therefore, we can also reject the null hypothesis in the Africa excluded case. 
 
@@ -445,7 +445,7 @@ ci_noafrica
 
 Figure 16: We are 95% confident that the slope of life expectancy at birth vs internet usership in nations excluding those of Africa is between 11.102 and 15.859.
 
-> Note: In all of our scatterplots, the dots representing countries have size indicating their population density. We used this technique to explore multiple aspects of each country’s data, and it doesn’t have a direct bearing on our analysis.
+> *Note: In all of our scatterplots, the dots representing countries have size indicating their population density. We used this technique to explore multiple aspects of each country’s data, and it doesn’t have a direct bearing on our analysis.*
 
 \newpage
 
