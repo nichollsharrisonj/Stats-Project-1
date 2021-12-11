@@ -267,6 +267,8 @@ Article explores this question specifically in Asia, with relevant take-away in 
 
 Article explores this question Globally, finding that the economic development of a country is greatly bolstered by internet development, and has both direct and indirect impacts on the average life expectancy of its citizens.
 
+\newpage
+
 ## Data Exploration
 
 ### Dataset: 
@@ -319,6 +321,8 @@ Internet Usage as the number of users within a country that access the internet.
 
 
 > *Note: We used the “countrycode” package in R to add the categorical variable of continent to our data.*
+
+\newpage
 
 ## Methods
 
@@ -374,6 +378,9 @@ Our linear model including African countries is as follows:
 $y_{lifeexpectancyatbirth} = B_0 + B_1* x_{internetusership}$
 
 $B_0 = 63.71$ $B_1 = 23.46$
+
+
+\newpage
 
 ## Figure 6
 
